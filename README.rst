@@ -14,20 +14,14 @@ Requirements
 
 Configuration
 =============
-Example appender XML configuration:
+Example appender XML configuration::
 
 <appender name="MongoAppender" type="log4net.Appender.MongoDBAppender, log4net-MongoDB">
-      
- <!-- MongoDB connection options -->
-      
- <host value="localhost" />
-      
- <port value="27017" />
-      
- <databaseName value="log4net_mongodb" />
-      
- <collectionName value="logs" />
-    
+<!-- MongoDB connection options -->
+<host value="localhost" />
+<port value="27017" />
+<databaseName value="log4net_mongodb" />
+<collectionName value="logs" />
 </appender>
 
 
@@ -44,5 +38,7 @@ Jozef Sevcik <sevcik@styxys.com>
 References
 ==========
 [1] http://www.mongodb.org/
+
 [2] http://logging.apache.org/log4net/
-[3] ttp://github.com/samus/mongodb-csharp
+
+[3] http://github.com/samus/mongodb-csharp
