@@ -2,6 +2,7 @@ log4net-MongoDB
 ===============
 
 log4net-MongoDB is log4net appender to MongoDB database.
+
 log4net-MongoDB is using mongodb-csharp driver (http://github.com/samus/mongodb-csharp).
 
 
@@ -12,8 +13,9 @@ Requirements
 
 
 Configuration
-============
+=============
 Example appender XML configuration:
+
 <appender name="MongoAppender" type="log4net.Appender.MongoDBAppender, log4net-MongoDB">
       
  <!-- MongoDB connection options -->
