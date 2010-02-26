@@ -22,6 +22,17 @@ Example appender XML configuration::
 <port value="27017" />
 <databaseName value="log4net_mongodb" />
 <collectionName value="logs" />
+<!--
+Uncomment following for MongoDB authentication
+      
+See http://www.mongodb.org/display/DOCS/Security+and+Authentication
+      
+      
+<userName value="jsk" />
+
+<password value="mysecretpass" />
+
+-->
 </appender>
 
 
