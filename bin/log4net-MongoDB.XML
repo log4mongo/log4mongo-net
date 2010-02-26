@@ -73,5 +73,15 @@
             Defaults to DEFAULT_COLLECTION_NAME
             </summary>
         </member>
+        <member name="P:log4net.Appender.MongoDBAppender.UserName">
+            <summary>
+            MongoDB database user name
+            </summary>
+        </member>
+        <member name="P:log4net.Appender.MongoDBAppender.Password">
+            <summary>
+            MongoDB database password
+            </summary>
+        </member>
     </members>
 </doc>
