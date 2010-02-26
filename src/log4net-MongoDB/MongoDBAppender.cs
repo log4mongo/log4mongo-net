@@ -36,13 +36,38 @@ namespace log4net.Appender
 {
     /// <summary>
     /// log4net Appender into MongoDB database
+    /// This appender does not use layout option
+    /// Format of log event (for exception):
+    /// <code>
+    /// { 
+    ///     "timestamp": "2010-02-26T19:49:11.4136472Z", 
+    ///     "level": "ERROR", 
+    ///     "thread": "7", 
+    ///     "userName": "jsk", 
+    ///     "message": "I'm sorry", 
+    ///     "fileName": "C:\jsk\work\opensource\log4net-MongoDB\src\log4net-MongoDB.Tests\MongoDBAppenderTests.cs", 
+    ///     "method": "TestException", 
+    ///     "lineNumber": "102", 
+    ///     "className": "log4net_MongoDB.Tests.MongoDBAppenderTests", 
+    ///     "exception": { 
+    ///                     "message": "Something wrong happened", 
+    ///                     "source": null, 
+    ///                     "stackTrace": null, 
+    ///                     "innerException": { 
+    ///                                         "message": "I'm the inner", 
+    ///                                         "source": null, 
+    ///                                         "stackTrace": null 
+    ///                                       } 
+    ///                  } 
+    /// }
+    /// </code>
     /// </summary>
     public class MongoDBAppender : AppenderSkeleton
     {
-        public const string DEFAULT_MONGO_HOST = "localhost";
-        public const int DEFAULT_MONGO_PORT = 27017;
-        public const string DEFAULT_DB_NAME = "log4net_mongodb";
-        public const string DEFAULT_COLLECTION_NAME = "logs";
+        protected const string DEFAULT_MONGO_HOST = "localhost";
+        protected const int DEFAULT_MONGO_PORT = 27017;
+        protected const string DEFAULT_DB_NAME = "log4net_mongodb";
+        protected const string DEFAULT_COLLECTION_NAME = "logs";
 
         private string hostname = DEFAULT_MONGO_HOST;
         private int port = DEFAULT_MONGO_PORT;
@@ -159,7 +184,31 @@ namespace log4net.Appender
             }
 
             // TODO: exception information        
+            if (loggingEvent.ExceptionObject != null)
+            {
+                toReturn["exception"] = ExceptionToBSON(loggingEvent.ExceptionObject);
+            }
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Create BSON representation of Exception
+        /// Inner exceptions are handled recursively
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        protected Document ExceptionToBSON(Exception ex)
+        {
+            var toReturn = new Document();
+            toReturn["message"] = ex.Message;
+            toReturn["source"] = ex.Source;
+            toReturn["stackTrace"] = ex.StackTrace;
             
+            if (ex.InnerException != null)
+            {
+                toReturn["innerException"] = ExceptionToBSON( ex.InnerException);
+            }
+
             return toReturn;
         }
     }

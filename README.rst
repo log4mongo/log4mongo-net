@@ -27,9 +27,7 @@ Example appender XML configuration::
 
 TODO
 ====
-- Exception object is not logged yet
 - support fot MongoDB authentication
-- dist/bin directory for build outputs
 
 Author
 ======

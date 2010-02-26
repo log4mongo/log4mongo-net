@@ -32,6 +32,7 @@ using MongoDB.Driver;
 using NUnit.Framework;
 using log4net;
 using log4net.Appender;
+using System;
 
 namespace log4net_MongoDB.Tests
 {
@@ -92,6 +93,14 @@ namespace log4net_MongoDB.Tests
                 log.Debug(i);
             }
             Assert.AreEqual(numberOfEvents, GetCollectionCount());
+        }
+
+        [Test]
+        public void TestException()
+        {
+            var ex = new Exception("Something wrong happened", new Exception("I'm the inner"));
+            log.Error("I'm sorry", ex);
+            Assert.AreEqual(1L, GetCollectionCount());
         }
 
         protected long GetCollectionCount()
