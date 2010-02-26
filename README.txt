@@ -38,7 +38,7 @@ See http://www.mongodb.org/display/DOCS/Security+and+Authentication
 
 Author
 ======
-Jozef Ševèík <sevcik@styxys.com>
+Jozef Sevcik <sevcik@styxys.com>
 
 References
 ==========
