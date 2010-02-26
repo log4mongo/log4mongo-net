@@ -29,6 +29,7 @@
 #endregion
 
 using System;
+using System.Security;
 using MongoDB.Driver;
 using log4net.Core;
 
@@ -124,6 +125,16 @@ namespace log4net.Appender
             set { collectionName = value; }
         }
 
+        /// <summary>
+        /// MongoDB database user name
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// MongoDB database password
+        /// </summary>
+        public string Password { get; set; }
+
         #endregion
 
         public override void ActivateOptions()
@@ -132,12 +143,22 @@ namespace log4net.Appender
             {
                 connection = new Mongo(Host, Port);
                 connection.Connect();
-                // TODO: support for authentication
-                collection = connection.getDB(DatabaseName).GetCollection(CollectionName);
+                var db = connection.getDB(DatabaseName);
+
+                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                {
+                    // use MongoDB authentication
+                    if (!db.Authenticate(UserName, Password))
+                    {
+                        throw new Exception(string.Format("Unable to authenticate to MongoDB Server at {0}", Host));
+                    }
+                }
+
+                collection = db.GetCollection(CollectionName);
             }
             catch (Exception e)
             {
-                ErrorHandler.Error("Exception while initializing MongoDB Appender", e);
+                ErrorHandler.Error("Exception while initializing MongoDB Appender", e, ErrorCode.GenericFailure);
             }
         }
 
@@ -151,10 +172,13 @@ namespace log4net.Appender
 
         protected override void Append(LoggingEvent loggingEvent)
         {
-            var doc = LoggingEventToBSON(loggingEvent);
-            if (doc != null)
+            if (collection != null)
             {
-                collection.Insert(doc);
+                var doc = LoggingEventToBSON(loggingEvent);
+                if (doc != null)
+                {
+                    collection.Insert(doc);
+                }
             }
         }
 
@@ -183,7 +207,7 @@ namespace log4net.Appender
                 toReturn["className"] = loggingEvent.LocationInformation.ClassName;
             }
 
-            // TODO: exception information        
+            // exception information
             if (loggingEvent.ExceptionObject != null)
             {
                 toReturn["exception"] = ExceptionToBSON(loggingEvent.ExceptionObject);

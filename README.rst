@@ -25,13 +25,9 @@ Example appender XML configuration::
 </appender>
 
 
-TODO
-====
-- support fot MongoDB authentication
-
 Author
 ======
-Jozef Sevcik <sevcik@styxys.com>
+Jozef Ševèík <sevcik@styxys.com>
 
 References
 ==========
