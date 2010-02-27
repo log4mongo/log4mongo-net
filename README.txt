@@ -1,7 +1,7 @@
 log4net-MongoDB
 ===============
 log4net-MongoDB is log4net appender to MongoDB database.
-log4net-MongoDB is using mongodb-csharp driver (http://github.com/samus/mongodb-csharp).
+log4net-MongoDB is using mongodb-csharp driver - http://github.com/samus/mongodb-csharp
 
 Requirements
 ============
