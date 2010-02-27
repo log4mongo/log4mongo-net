@@ -49,6 +49,12 @@
             <param name="ex"></param>
             <returns></returns>
         </member>
+        <member name="P:log4net.Appender.MongoDBAppender.LogCollection">
+            <summary>
+            Mongo collection used for logs
+            The main reason of exposing this is to have same log collection available for unit tests
+            </summary>
+        </member>
         <member name="P:log4net.Appender.MongoDBAppender.Host">
             <summary>
             Hostname of MongoDB server
