@@ -83,6 +83,15 @@ namespace log4net.Appender
             get { return false; }
         }
 
+        /// <summary>
+        /// Mongo collection used for logs
+        /// The main reason of exposing this is to have same log collection available for unit tests
+        /// </summary>
+        public IMongoCollection LogCollection
+        {
+            get { return collection; }
+        }
+
         #region Appender configuration properties
 
         /// <summary>

@@ -53,15 +53,8 @@ namespace log4net_MongoDB.Tests
             appender = appenders[0] as MongoDBAppender;
             Assert.IsNotNull(appender, "MongoDBAppender is expected to be the only one configured for tests");
 
-            /* 
-             * Initiate connection to mongo
-             * This connection will be used to check log events written by appender
-             */
-             var connection = new Mongo(appender.Host, appender.Port);
-             connection.Connect();
-
-             // TODO: support for authentication
-             collection = connection.getDB(appender.DatabaseName).GetCollection(appender.CollectionName);
+            // Use mongo collection configured at appender level for tests
+            collection = appender.LogCollection;
         }
 
         [TestFixtureTearDown]
