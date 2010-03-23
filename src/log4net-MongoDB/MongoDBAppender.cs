@@ -32,6 +32,7 @@ using System;
 using System.Security;
 using MongoDB.Driver;
 using log4net.Core;
+using System.Text;
 
 namespace log4net.Appender
 {
@@ -150,19 +151,16 @@ namespace log4net.Appender
         {
             try
             {
-                connection = new Mongo(Host, Port);
-                connection.Connect();
-                var db = connection.getDB(DatabaseName);
-
+                var mongoConnectionString = new StringBuilder(string.Format("Server={0}:{1}", Host, Port));
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
                     // use MongoDB authentication
-                    if (!db.Authenticate(UserName, Password))
-                    {
-                        throw new Exception(string.Format("Unable to authenticate to MongoDB Server at {0}", Host));
-                    }
+                    mongoConnectionString.AppendFormat(";Username={0};Password={1}", UserName, Password);
                 }
 
+                connection = new Mongo(mongoConnectionString.ToString());
+                connection.Connect();
+                var db = connection.GetDatabase(DatabaseName);
                 collection = db.GetCollection(CollectionName);
             }
             catch (Exception e)

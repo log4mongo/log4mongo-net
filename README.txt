@@ -5,8 +5,8 @@ log4net-MongoDB is using mongodb-csharp driver - http://github.com/samus/mongodb
 
 Requirements
 ============
-- build with MSBuild/VS, .NET 3.5+ required
-- tested against MongoDB 1.3.2
+- .NET 3.5+ required
+- tested against MongoDB 1.3+
 
 Configuration
 =============
