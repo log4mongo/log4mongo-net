@@ -75,6 +75,10 @@ namespace log4net_MongoDB.Tests
         {    
             log.Debug("Oh, Mongo !");
             Assert.AreEqual(1L, GetCollectionCount());
+
+            var retrieved = collection.FindOne(null);
+            Assert.IsNotNull(retrieved);
+            Assert.AreEqual(retrieved["message"], "Oh, Mongo !");
         }
 
         [Test]
@@ -94,6 +98,22 @@ namespace log4net_MongoDB.Tests
             var ex = new Exception("Something wrong happened", new Exception("I'm the inner"));
             log.Error("I'm sorry", ex);
             Assert.AreEqual(1L, GetCollectionCount());
+
+            var retrieved = collection.FindOne(null);
+            Assert.IsNotNull(retrieved);
+
+            // level
+            Assert.AreEqual(retrieved["level"], "ERROR", "Exception not logged with ERROR level");
+            
+            // exception
+            var exception = retrieved["exception"] as Document;
+            Assert.IsNotNull(exception, "Log event does not contain expected exception");
+            Assert.AreEqual(exception["message"], "Something wrong happened", "Exception message different from expected");
+
+            // inner exception
+            var innerException = exception["innerException"] as Document;
+            Assert.IsNotNull(innerException, "Log event does not contain expected inner exception");
+            Assert.AreEqual(innerException["message"], "I'm the inner", "Inner exception message different from expected");
         }
 
         protected long GetCollectionCount()
