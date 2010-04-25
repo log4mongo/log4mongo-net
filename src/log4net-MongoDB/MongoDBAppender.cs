@@ -44,7 +44,7 @@ namespace log4net.Appender
     /// Format of log event (for exception):
     /// <code>
     /// { 
-    ///     "timestamp" : "04/25/2010 02:16:21,257",
+    ///     "timestamp" : "2010-04-25 14:21:43,565",
     ///     "level": "ERROR", 
     ///     "thread": "7", 
     ///     "userName": "jsk", 
