@@ -33,6 +33,8 @@ using System.Security;
 using MongoDB.Driver;
 using log4net.Core;
 using System.Text;
+using System.Globalization;
+using log4net.DateFormatter;
 
 namespace log4net.Appender
 {
@@ -42,7 +44,7 @@ namespace log4net.Appender
     /// Format of log event (for exception):
     /// <code>
     /// { 
-    ///     "timestamp": "2010-02-26T19:49:11.4136472Z", 
+    ///     "timestamp" : "04/25/2010 02:16:21,257",
     ///     "level": "ERROR", 
     ///     "thread": "7", 
     ///     "userName": "jsk", 
@@ -70,6 +72,8 @@ namespace log4net.Appender
         protected const int DEFAULT_MONGO_PORT = 27017;
         protected const string DEFAULT_DB_NAME = "log4net_mongodb";
         protected const string DEFAULT_COLLECTION_NAME = "logs";
+
+        private const string TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss,fff";
 
         private string hostname = DEFAULT_MONGO_HOST;
         private int port = DEFAULT_MONGO_PORT;
@@ -199,7 +203,7 @@ namespace log4net.Appender
             if (loggingEvent == null) return null;
 
             var toReturn = new Document();
-            toReturn["timestamp"] = loggingEvent.TimeStamp;
+            toReturn["timestamp"] = loggingEvent.TimeStamp.ToString(TIMESTAMP_FORMAT, DateTimeFormatInfo.InvariantInfo);
             toReturn["level"] = loggingEvent.Level.ToString();
             toReturn["thread"] = loggingEvent.ThreadName;
             toReturn["userName"] = loggingEvent.UserName;
