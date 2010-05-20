@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>log4net-MongoDB</name>
+        <name>log4mongo-net</name>
     </assembly>
     <members>
         <member name="T:log4net.Appender.MongoDBAppender">
@@ -11,15 +11,15 @@
             Format of log event (for exception):
             <code>
             { 
-                "timestamp": "2010-02-26T19:49:11.4136472Z", 
+                "timestamp" : "Wed Apr 28 2010 00:01:41 GMT+0200 (Central Europe Daylight Time)",
                 "level": "ERROR", 
                 "thread": "7", 
                 "userName": "jsk", 
                 "message": "I'm sorry", 
-                "fileName": "C:\jsk\work\opensource\log4net-MongoDB\src\log4net-MongoDB.Tests\MongoDBAppenderTests.cs", 
+                "fileName": "C:\jsk\work\opensource\log4mongo-net\src\log4mongo-net.Tests\MongoDBAppenderTests.cs", 
                 "method": "TestException", 
                 "lineNumber": "102", 
-                "className": "log4net_MongoDB.Tests.MongoDBAppenderTests", 
+                "className": "log4mongo_net.Tests.MongoDBAppenderTests", 
                 "exception": { 
                                 "message": "Something wrong happened", 
                                 "source": null, 

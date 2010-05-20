@@ -47,10 +47,10 @@ namespace log4net.Appender
     ///     "thread": "7", 
     ///     "userName": "jsk", 
     ///     "message": "I'm sorry", 
-    ///     "fileName": "C:\jsk\work\opensource\log4net-MongoDB\src\log4net-MongoDB.Tests\MongoDBAppenderTests.cs", 
+    ///     "fileName": "C:\jsk\work\opensource\log4mongo-net\src\log4mongo-net.Tests\MongoDBAppenderTests.cs", 
     ///     "method": "TestException", 
     ///     "lineNumber": "102", 
-    ///     "className": "log4net_MongoDB.Tests.MongoDBAppenderTests", 
+    ///     "className": "log4mongo_net.Tests.MongoDBAppenderTests", 
     ///     "exception": { 
     ///                     "message": "Something wrong happened", 
     ///                     "source": null, 

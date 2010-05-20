@@ -1,29 +1,31 @@
-log4net-MongoDB
+log4mongo-net
 ===============
-log4net-MongoDB is log4net appender to MongoDB database.
-log4net-MongoDB is using mongodb-csharp driver - http://github.com/samus/mongodb-csharp
+log4mongo-net is log4net appender to MongoDB database.
+log4mongo-net is using mongodb-csharp driver - http://github.com/samus/mongodb-csharp
 
 Requirements
 ============
 - .NET 3.5+ required
-- tested against MongoDB 1.3+
+- tested with MongoDB 1.3+
 
 Configuration
 =============
-Example appender XML configuration::
+Include all DLLs in bin/ directory to your project.
 
-<appender name="MongoAppender" type="log4net.Appender.MongoDBAppender, log4net-MongoDB">
-<!-- MongoDB connection options -->
-<host value="localhost" />
-<port value="27017" />
-<databaseName value="log4net_mongodb" />
-<collectionName value="logs" />
-<!--
-Uncomment following for MongoDB authentication
-See http://www.mongodb.org/display/DOCS/Security+and+Authentication
-<userName value="jsk" />
-<password value="mysecretpass" />
--->
+log4net appender sample XML configuration::
+
+<appender name="MongoAppender" type="log4net.Appender.MongoDBAppender, log4mongo-net">
+  <!-- MongoDB connection options -->
+  <host value="localhost" />
+  <port value="27017" />
+  <databaseName value="logs" />
+  <collectionName value="logs_net" />
+  <!-- 
+  Uncomment following for MongoDB authentication
+  See http://www.mongodb.org/display/DOCS/Security+and+Authentication
+  <userName value="mylogin" />
+  <password value="mysecretpass" />
+  -->
 </appender>
 
 Author

@@ -1,10 +1,10 @@
-src/log4net-MongoDB/bin
-src/log4net-MongoDB/obj
+src/log4mongo-net/bin
+src/log4mongo-net/obj
 
-src/log4net-MongoDB.Tests/bin
-src/log4net-MongoDB.Tests/obj
+src/log4mongo-net.Tests/bin
+src/log4mongo-net.Tests/obj
 
-src/_ReSharper.log4net-MongoDB
-src/log4net-MongoDB.5.0.ReSharper.user
+src/_ReSharper.log4mongo-net
+src/log4mongo-net.5.0.ReSharper.user
 
-src/log4net-MongoDB.suo
+src/log4mongo-net.suo

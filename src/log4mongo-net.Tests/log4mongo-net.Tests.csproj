@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>log4net_MongoDB.Tests</RootNamespace>
-    <AssemblyName>log4net-MongoDB.Tests</AssemblyName>
+    <AssemblyName>log4mongo-net.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -59,9 +59,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\log4net-mongodb\log4net-MongoDB.csproj">
+    <ProjectReference Include="..\log4mongo-net\log4mongo-net.csproj">
       <Project>{0173BD69-F79F-4994-8949-D062818F7D49}</Project>
-      <Name>log4net-MongoDB</Name>
+      <Name>log4mongo-net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
