@@ -6,7 +6,7 @@ log4mongo-net is using mongodb-csharp driver - http://github.com/samus/mongodb-c
 Requirements
 ============
 - .NET 3.5+ required
-- tested with MongoDB 1.3+
+- tested with MongoDB 1.2+
 
 Configuration
 =============
