@@ -47,6 +47,7 @@ namespace log4net.Appender
     ///     "thread": "7", 
     ///     "userName": "jsk", 
     ///     "message": "I'm sorry", 
+    ///     "loggerName": "log4net_MongoDB.Tests.MongoDBAppenderTests",
     ///     "fileName": "C:\jsk\work\opensource\log4mongo-net\src\log4mongo-net.Tests\MongoDBAppenderTests.cs", 
     ///     "method": "TestException", 
     ///     "lineNumber": "102", 
@@ -204,6 +205,7 @@ namespace log4net.Appender
             toReturn["thread"] = loggingEvent.ThreadName;
             toReturn["userName"] = loggingEvent.UserName;
             toReturn["message"] = loggingEvent.RenderedMessage;
+            toReturn["loggerName"] = loggingEvent.LoggerName;
                         
             // location information, if available
             if (loggingEvent.LocationInformation != null)

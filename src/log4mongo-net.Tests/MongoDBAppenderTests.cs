@@ -79,6 +79,7 @@ namespace log4net_MongoDB.Tests
             var retrieved = collection.FindOne(null);
             Assert.IsNotNull(retrieved);
             Assert.AreEqual(retrieved["message"], "Oh, Mongo !");
+            Assert.AreEqual(retrieved["loggerName"], typeof(MongoDBAppenderTests).FullName);
         }
 
         [Test]
