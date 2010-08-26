@@ -16,6 +16,7 @@
                 "thread": "7", 
                 "userName": "jsk", 
                 "message": "I'm sorry", 
+                "loggerName": "log4net_MongoDB.Tests.MongoDBAppenderTests",
                 "fileName": "C:\jsk\work\opensource\log4mongo-net\src\log4mongo-net.Tests\MongoDBAppenderTests.cs", 
                 "method": "TestException", 
                 "lineNumber": "102", 

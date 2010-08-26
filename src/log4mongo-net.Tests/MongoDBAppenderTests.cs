@@ -28,7 +28,7 @@
 */
 #endregion
 
-using MongoDB.Driver;
+using MongoDB;
 using NUnit.Framework;
 using log4net;
 using log4net.Appender;
