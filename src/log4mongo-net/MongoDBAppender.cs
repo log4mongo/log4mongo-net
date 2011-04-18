@@ -33,6 +33,8 @@ using System.Security;
 using MongoDB;
 using log4net.Core;
 using System.Text;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace log4net.Appender
 {
@@ -77,8 +79,8 @@ namespace log4net.Appender
         private string dbName = DEFAULT_DB_NAME;
         private string collectionName = DEFAULT_COLLECTION_NAME;
 
-        protected Mongo connection;
-        protected IMongoCollection collection;
+        protected MongoServer connection;
+        protected MongoCollection collection;
 
         protected override bool RequiresLayout
         {
@@ -89,7 +91,7 @@ namespace log4net.Appender
         /// Mongo collection used for logs
         /// The main reason of exposing this is to have same log collection available for unit tests
         /// </summary>
-        public IMongoCollection LogCollection
+        public MongoCollection LogCollection
         {
             get { return collection; }
         }
@@ -159,7 +161,7 @@ namespace log4net.Appender
                     mongoConnectionString.AppendFormat(";Username={0};Password={1}", UserName, Password);
                 }
 
-                connection = new Mongo(mongoConnectionString.ToString());
+                connection = MongoServer.Create(mongoConnectionString.ToString());
                 connection.Connect();
                 var db = connection.GetDatabase(DatabaseName);
                 collection = db.GetCollection(CollectionName);
@@ -174,7 +176,6 @@ namespace log4net.Appender
         {
             collection = null;
             connection.Disconnect();
-            connection.Dispose();
             base.OnClose();
         }
 
@@ -195,11 +196,11 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="loggingEvent"></param>
         /// <returns></returns>
-        protected Document LoggingEventToBSON(LoggingEvent loggingEvent)
+        protected BsonDocument LoggingEventToBSON(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null) return null;
 
-            var toReturn = new Document();
+            var toReturn = new BsonDocument();
             toReturn["timestamp"] = loggingEvent.TimeStamp;
             toReturn["level"] = loggingEvent.Level.ToString();
             toReturn["thread"] = loggingEvent.ThreadName;
@@ -230,9 +231,9 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
-        protected Document ExceptionToBSON(Exception ex)
+        protected BsonDocument ExceptionToBSON(Exception ex)
         {
-            var toReturn = new Document();
+            var toReturn = new BsonDocument();
             toReturn["message"] = ex.Message;
             toReturn["source"] = ex.Source;
             toReturn["stackTrace"] = ex.StackTrace;

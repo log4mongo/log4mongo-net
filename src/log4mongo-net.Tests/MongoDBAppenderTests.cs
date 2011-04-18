@@ -33,6 +33,8 @@ using NUnit.Framework;
 using log4net;
 using log4net.Appender;
 using System;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace log4net_MongoDB.Tests
 {
@@ -41,7 +43,7 @@ namespace log4net_MongoDB.Tests
     {
         private static ILog log = LogManager.GetLogger(typeof(MongoDBAppenderTests));
         private MongoDBAppender appender;
-        private IMongoCollection collection;
+        private MongoCollection collection;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -76,10 +78,10 @@ namespace log4net_MongoDB.Tests
             log.Debug("Oh, Mongo !");
             Assert.AreEqual(1L, GetCollectionCount());
 
-            var retrieved = collection.FindOne(null);
+            var retrieved = collection.FindOneAs<BsonDocument>();
             Assert.IsNotNull(retrieved);
-            Assert.AreEqual(retrieved["message"], "Oh, Mongo !");
-            Assert.AreEqual(retrieved["loggerName"], typeof(MongoDBAppenderTests).FullName);
+            Assert.AreEqual(retrieved["message"].AsString, "Oh, Mongo !");
+            Assert.AreEqual(retrieved["loggerName"].AsString, typeof(MongoDBAppenderTests).FullName);
         }
 
         [Test]
@@ -98,33 +100,33 @@ namespace log4net_MongoDB.Tests
         {
             var ex = new Exception("Something wrong happened", new Exception("I'm the inner"));
             log.Error("I'm sorry", ex);
-            Assert.AreEqual(1L, GetCollectionCount());
+            Assert.AreEqual(1, GetCollectionCount());
 
-            var retrieved = collection.FindOne(null);
+            var retrieved = collection.FindOneAs<BsonDocument>();
             Assert.IsNotNull(retrieved);
 
             // level
             Assert.AreEqual(retrieved["level"], "ERROR", "Exception not logged with ERROR level");
             
             // exception
-            var exception = retrieved["exception"] as Document;
+            var exception = retrieved["exception"] as BsonDocument;
             Assert.IsNotNull(exception, "Log event does not contain expected exception");
             Assert.AreEqual(exception["message"], "Something wrong happened", "Exception message different from expected");
 
             // inner exception
-            var innerException = exception["innerException"] as Document;
+            var innerException = exception["innerException"] as BsonDocument;
             Assert.IsNotNull(innerException, "Log event does not contain expected inner exception");
             Assert.AreEqual(innerException["message"], "I'm the inner", "Inner exception message different from expected");
         }
 
-        protected long GetCollectionCount()
+        protected int GetCollectionCount()
         {
             return collection.Count();
         }
 
         protected void ClearCollection()
         {
-            collection.Delete(new Document());
+            collection.RemoveAll();
         }
     }
 }
