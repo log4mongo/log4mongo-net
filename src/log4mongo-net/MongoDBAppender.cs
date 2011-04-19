@@ -235,8 +235,8 @@ namespace log4net.Appender
         {
             var toReturn = new BsonDocument();
             toReturn["message"] = ex.Message;
-            toReturn["source"] = ex.Source;
-            toReturn["stackTrace"] = ex.StackTrace;
+            toReturn["source"] = ex.Source ?? string.Empty;
+            toReturn["stackTrace"] = ex.StackTrace ?? string.Empty;
             
             if (ex.InnerException != null)
             {

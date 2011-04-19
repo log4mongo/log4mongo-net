@@ -105,18 +105,17 @@ namespace log4net_MongoDB.Tests
             var retrieved = collection.FindOneAs<BsonDocument>();
             Assert.IsNotNull(retrieved);
 
-            // level
-            Assert.AreEqual(retrieved["level"], "ERROR", "Exception not logged with ERROR level");
+            // verify values
+            Assert.AreEqual(retrieved["level"].AsString, "ERROR", "Exception not logged with ERROR level");
             
-            // exception
             var exception = retrieved["exception"] as BsonDocument;
             Assert.IsNotNull(exception, "Log event does not contain expected exception");
-            Assert.AreEqual(exception["message"], "Something wrong happened", "Exception message different from expected");
+            Assert.AreEqual(exception["message"].AsString, "Something wrong happened", "Exception message different from expected");
 
-            // inner exception
+            
             var innerException = exception["innerException"] as BsonDocument;
             Assert.IsNotNull(innerException, "Log event does not contain expected inner exception");
-            Assert.AreEqual(innerException["message"], "I'm the inner", "Inner exception message different from expected");
+            Assert.AreEqual(innerException["message"].AsString, "I'm the inner", "Inner exception message different from expected");
         }
 
         protected int GetCollectionCount()
