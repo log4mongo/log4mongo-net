@@ -3,6 +3,10 @@ log4mongo-net
 log4mongo-net is log4net appender to MongoDB database.
 log4mongo-net is using 10gen official C# driver -  http://www.mongodb.org/display/DOCS/CSharp+Language+Center
 
+Licence
+============
+New BSD License
+
 Requirements
 ============
 - .NET 3.5+ required
