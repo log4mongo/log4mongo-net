@@ -86,22 +86,43 @@ namespace log4net_MongoDB.Tests
         }
 
         [Test]
-        public void TestProperties()
+        public void TestGlobalContextProperties()
         {
         	GlobalContext.Properties["TestGlobalProperty"] = "TestGlobalValue";
-        	ThreadContext.Properties["ThreadProperty"] = "ThreadValue";
+
             log.Debug("Oh, Mongo !");
-            Assert.AreEqual(1L, GetCollectionCount());
-
             var retrieved = collection.FindOneAs<BsonDocument>();
-            Assert.IsNotNull(retrieved);
-            Assert.AreEqual(retrieved["message"].AsString, "Oh, Mongo !");
-            Assert.AreEqual(retrieved["loggerName"].AsString, typeof(MongoDBAppenderTests).FullName);
 
+            Assert.IsNotNull(retrieved);
         	var properties = retrieved["properties"] as BsonDocument;
+			Assert.IsNotNull( properties );
         	Assert.AreEqual( properties["TestGlobalProperty"].AsString, "TestGlobalValue" );
-        	Assert.AreEqual( properties["ThreadProperty"].AsString, "ThreadValue" );
         }
+
+        [Test]
+        public void TestThreadContextProperties()
+        {
+			ThreadContext.Properties["ThreadProperty"] = "ThreadValue";
+
+			log.Debug("Oh, Mongo !");
+			var retrieved = collection.FindOneAs<BsonDocument>();
+			
+			Assert.IsNotNull(retrieved);
+			var properties = retrieved["properties"] as BsonDocument;
+			Assert.IsNotNull(properties);
+        	
+			Assert.AreEqual( properties["ThreadProperty"].AsString, "ThreadValue" );
+        }
+
+
+    	[ Test ]
+    	public void TestMachineName()
+    	{
+    		log.Debug( "Oh, Mongo !" );
+    		var retrieved = collection.FindOneAs<BsonDocument>();
+    		Assert.IsNotNull( retrieved );
+    		Assert.AreEqual( retrieved["machineName"].AsString, Environment.MachineName );
+    	}
 
         [Test]
         public void TestMultipleEvents()
