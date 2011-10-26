@@ -29,7 +29,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Security;
+using log4net.Util;
 using MongoDB;
 using log4net.Core;
 using System.Text;
@@ -63,7 +65,12 @@ namespace log4net.Appender
     ///                                         "source": null, 
     ///                                         "stackTrace": null 
     ///                                       } 
-    ///                  } 
+    ///                  },
+    ///     "properties": {
+    ///                     "name": "value",
+    ///                     "name": "value",
+    ///                     "name": "value"
+    ///                   }
     /// }
     /// </code>
     /// </summary>
@@ -81,6 +88,19 @@ namespace log4net.Appender
 
         protected MongoServer connection;
         protected MongoCollection collection;
+        private string _machineName;
+
+        public string MachineName
+        {
+            get
+            {
+                if (_machineName == null)
+                    _machineName = System.Environment.MachineName;
+
+                return _machineName;
+            }
+            private set { _machineName = value; }
+        }
 
         protected override bool RequiresLayout
         {
@@ -207,6 +227,8 @@ namespace log4net.Appender
             toReturn["userName"] = loggingEvent.UserName;
             toReturn["message"] = loggingEvent.RenderedMessage;
             toReturn["loggerName"] = loggingEvent.LoggerName;
+            toReturn["domain"] = loggingEvent.Domain;
+            toReturn["machineName"] = MachineName;
                         
             // location information, if available
             if (loggingEvent.LocationInformation != null)
@@ -222,6 +244,18 @@ namespace log4net.Appender
             {
                 toReturn["exception"] = ExceptionToBSON(loggingEvent.ExceptionObject);
             }
+
+            // properties
+            var compositeProperties = loggingEvent.GetProperties();
+            if (compositeProperties != null && compositeProperties.Count > 0)
+            {
+                var properties = new BsonDocument();
+                foreach (DictionaryEntry entry in compositeProperties)
+                    properties[entry.Key.ToString()] = entry.Value.ToString();
+
+                toReturn["properties"] = properties;
+            }
+            
             return toReturn;
         }
 
