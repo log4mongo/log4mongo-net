@@ -158,7 +158,7 @@ namespace log4net_MongoDB.Tests
             Assert.AreEqual(innerException["message"].AsString, "I'm the inner", "Inner exception message different from expected");
         }
 
-        protected int GetCollectionCount()
+        protected long GetCollectionCount()
         {
             return collection.Count();
         }
