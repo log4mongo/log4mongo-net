@@ -8,3 +8,6 @@ src/_ReSharper.log4mongo-net
 src/log4mongo-net.5.0.ReSharper.user
 
 src/log4mongo-net.suo
+
+src/*.user
+src/*/*.user
