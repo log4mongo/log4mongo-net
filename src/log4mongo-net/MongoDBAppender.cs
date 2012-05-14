@@ -76,14 +76,11 @@ namespace log4net.Appender
     /// </summary>
     public class MongoDBAppender : AppenderSkeleton
     {
-        protected const string DEFAULT_MONGO_HOST = "localhost";
-        protected const int DEFAULT_MONGO_PORT = 27017;
+		protected const string DEFAULT_CONNECTION_STRING = "mongodb://localhost";
         protected const string DEFAULT_DB_NAME = "log4net_mongodb";
         protected const string DEFAULT_COLLECTION_NAME = "logs";
 
-        private string hostname = DEFAULT_MONGO_HOST;
-        private int port = DEFAULT_MONGO_PORT;
-        private string dbName = DEFAULT_DB_NAME;
+		private string connectionString = DEFAULT_CONNECTION_STRING;
         private string collectionName = DEFAULT_COLLECTION_NAME;
 
         protected MongoServer connection;
@@ -118,37 +115,18 @@ namespace log4net.Appender
 
         #region Appender configuration properties
 
-        /// <summary>
-        /// Hostname of MongoDB server
-        /// Defaults to DEFAULT_MONGO_HOST
-        /// </summary>
-        public string Host
-        {
-            get { return hostname; }
-            set { hostname = value; }
-        }
+    	/// <summary>
+		/// MongoDB database connection in the format:
+		/// mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
+		/// See http://www.mongodb.org/display/DOCS/Connections
+		/// </summary>
+		public string ConnectionString
+    	{
+    		get { return connectionString; }
+    		set { connectionString = value; }
+    	}
 
-        /// <summary>
-        /// Port of MongoDB server
-        /// Defaults to DEFAULT_MONGO_PORT
-        /// </summary>
-        public int Port
-        {
-            get { return port; }
-            set { port = value; }
-        }
-
-        /// <summary>
-        /// Name of the database on MongoDB
-        /// Defaults to DEFAULT_DB_NAME
-        /// </summary>
-        public string DatabaseName
-        {
-            get { return dbName; }
-            set { dbName = value; }
-        }
-
-        /// <summary>
+    	/// <summary>
         /// Name of the collection in database
         /// Defaults to DEFAULT_COLLECTION_NAME
         /// </summary>
@@ -158,32 +136,16 @@ namespace log4net.Appender
             set { collectionName = value; }
         }
 
-        /// <summary>
-        /// MongoDB database user name
-        /// </summary>
-        public string UserName { get; set; }
-
-        /// <summary>
-        /// MongoDB database password
-        /// </summary>
-        public string Password { get; set; }
-
         #endregion
 
         public override void ActivateOptions()
         {
             try
             {
-                var mongoConnectionString = new StringBuilder(string.Format("Server={0}:{1}", Host, Port));
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-                {
-                    // use MongoDB authentication
-                    mongoConnectionString.AppendFormat(";Username={0};Password={1}", UserName, Password);
-                }
-
-                connection = MongoServer.Create(mongoConnectionString.ToString());
+            	var mongoUrl = MongoUrl.Create(connectionString);
+                connection = MongoServer.Create(mongoUrl);
                 connection.Connect();
-                var db = connection.GetDatabase(DatabaseName);
+				var db = connection.GetDatabase(mongoUrl.DatabaseName ?? DEFAULT_DB_NAME);
                 collection = db.GetCollection(CollectionName);
             }
             catch (Exception e)
