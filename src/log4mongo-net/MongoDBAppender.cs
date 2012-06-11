@@ -81,7 +81,6 @@ namespace log4net.Appender
         protected const string DEFAULT_DB_NAME = "log4net_mongodb";
         protected const string DEFAULT_COLLECTION_NAME = "logs";
 
-        private string connectionString = string.Empty;
         private string hostname = DEFAULT_MONGO_HOST;
         private int port = DEFAULT_MONGO_PORT;
         private string dbName = DEFAULT_DB_NAME;
@@ -93,7 +92,13 @@ namespace log4net.Appender
 
         public string MachineName
         {
-            get { return _machineName ?? (_machineName = System.Environment.MachineName); }
+            get
+            {
+                if (_machineName == null)
+                    _machineName = System.Environment.MachineName;
+
+                return _machineName;
+            }
             private set { _machineName = value; }
         }
 
@@ -112,16 +117,6 @@ namespace log4net.Appender
         }
 
         #region Appender configuration properties
-
-        /// <summary>
-        /// ConnectionString MongoDB server
-        /// Defaults to string.Empty
-        /// </summary>
-        public string ConnectionString
-        {
-            get { return connectionString; }
-            set { connectionString = value; }
-        }
 
         /// <summary>
         /// Hostname of MongoDB server
@@ -175,42 +170,20 @@ namespace log4net.Appender
 
         #endregion
 
-        private bool DbInConnectionString()
-        {
-            return !string.IsNullOrEmpty(ConnectionString);
-        }
-
-        private string GenerateConnString()
-        {
-            if(!string.IsNullOrEmpty(ConnectionString))
-            {
-                return ConnectionString;
-            }
-            var mongoConnectionString = new StringBuilder(string.Format("Server={0}:{1}", Host, Port));
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-            {
-                // use MongoDB authentication
-                mongoConnectionString.AppendFormat(";Username={0};Password={1}", UserName, Password);
-            }
-            return mongoConnectionString.ToString();
-        }
-
         public override void ActivateOptions()
         {
             try
             {
-                var mongoConnectionString = GenerateConnString();
-                MongoDatabase db;
-                if(DbInConnectionString())
+                var mongoConnectionString = new StringBuilder(string.Format("Server={0}:{1}", Host, Port));
+                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
-                    db = MongoDatabase.Create(mongoConnectionString);
+                    // use MongoDB authentication
+                    mongoConnectionString.AppendFormat(";Username={0};Password={1}", UserName, Password);
                 }
-                else
-                {
-                    connection = MongoServer.Create(mongoConnectionString);
-                    connection.Connect();
-                    db = connection.GetDatabase(DatabaseName);
-                }
+
+                connection = MongoServer.Create(mongoConnectionString.ToString());
+                connection.Connect();
+                var db = connection.GetDatabase(DatabaseName);
                 collection = db.GetCollection(CollectionName);
             }
             catch (Exception e)
@@ -222,10 +195,7 @@ namespace log4net.Appender
         protected override void OnClose()
         {
             collection = null;
-            if(connection != null)
-            {
-                connection.Disconnect();
-            }
+            connection.Disconnect();
             base.OnClose();
         }
 
