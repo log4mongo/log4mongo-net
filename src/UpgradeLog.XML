@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="log4mongo-net">
+</Property><Property Name="Solution File" Value="C:\projects\log4mongo-net\src\log4mongo-net.sln">
+</Property><Property Name="Date" Value="Monday, June 11, 2012">
+</Property><Property Name="Time" Value="19:38 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="log4mongo-net.sln" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net.sln">
+</Event><Event ErrorLevel="0" Project="log4mongo-net" Source="log4mongo-net\log4mongo-net.csproj" Description="Project file successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net\log4mongo-net.csproj">
+</Event><Event ErrorLevel="0" Project="log4mongo-net" Source="log4mongo-net\MongoDBAppender.cs" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net\MongoDBAppender.cs">
+</Event><Event ErrorLevel="0" Project="log4mongo-net" Source="log4mongo-net\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="log4mongo-net" Source="log4mongo-net\log4mongo-net.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="log4mongo-net" Source="log4mongo-net\log4mongo-net.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\log4mongo-net.Tests.csproj" Description="Project file successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net.Tests\log4mongo-net.Tests.csproj">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\Program.cs" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net.Tests\Program.cs">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\MongoDBAppenderTests.cs" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net.Tests\MongoDBAppenderTests.cs">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net.Tests\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\App.config" Description="File successfully backed up as C:\projects\log4mongo-net\src\Backup\log4mongo-net.Tests\App.config">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\log4mongo-net.Tests.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\log4mongo-net.Tests.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="log4mongo-net.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="log4mongo-net.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="log4mongo-net" Source="log4mongo-net\log4mongo-net.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="log4mongo-net.Tests" Source="log4mongo-net.Tests\log4mongo-net.Tests.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
