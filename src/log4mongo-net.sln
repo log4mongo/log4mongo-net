@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4mongo-net", "log4mongo-net\log4mongo-net.csproj", "{0173BD69-F79F-4994-8949-D062818F7D49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4mongo-net.Tests", "log4mongo-net.Tests\log4mongo-net.Tests.csproj", "{DB7365C6-1AD6-490B-8835-B8ABE868B475}"
