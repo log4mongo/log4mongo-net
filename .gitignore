@@ -1,10 +1,6 @@
-src/log4mongo-net/bin
-src/log4mongo-net/obj
-
-src/log4mongo-net.Tests/bin
-src/log4mongo-net.Tests/obj
-
-src/_ReSharper.log4mongo-net
-src/log4mongo-net.5.0.ReSharper.user
-
-src/log4mongo-net.suo
+# Visual Studio stuff
+/src/*.user
+/src/*.suo
+/src/*/bin/
+/src/*/obj/
+/src/*/*.user
