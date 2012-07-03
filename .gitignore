@@ -4,3 +4,5 @@
 /src/*/bin/
 /src/*/obj/
 /src/*/*.user
+src/packages/
+src/_ReSharper*

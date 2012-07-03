@@ -51,7 +51,7 @@ namespace log4net_MongoDB.Tests
             log4net.Config.XmlConfigurator.Configure();
             var appenders = log.Logger.Repository.GetAppenders();
             Assert.IsTrue(appenders.Length > 0, "Seems that MongoDB Appender is not configured");
-            
+
             appender = appenders[0] as MongoDBAppender;
             Assert.IsNotNull(appender, "MongoDBAppender is expected to be the only one configured for tests");
 
@@ -74,7 +74,7 @@ namespace log4net_MongoDB.Tests
 
         [Test]
         public void TestSingleEvent()
-        {    
+        {
             log.Debug("Oh, Mongo !");
             Assert.AreEqual(1L, GetCollectionCount());
 
@@ -82,7 +82,7 @@ namespace log4net_MongoDB.Tests
             Assert.IsNotNull(retrieved);
             Assert.AreEqual(retrieved["message"].AsString, "Oh, Mongo !");
             Assert.AreEqual(retrieved["loggerName"].AsString, typeof(MongoDBAppenderTests).FullName);
-            Assert.AreEqual(retrieved["domain"].AsString, AppDomain.CurrentDomain.FriendlyName  );
+            Assert.AreEqual(retrieved["domain"].AsString, AppDomain.CurrentDomain.FriendlyName);
         }
 
         [Test]
@@ -95,8 +95,8 @@ namespace log4net_MongoDB.Tests
 
             Assert.IsNotNull(retrieved);
             var properties = retrieved["properties"] as BsonDocument;
-            Assert.IsNotNull( properties );
-            Assert.AreEqual( properties["TestGlobalProperty"].AsString, "TestGlobalValue" );
+            Assert.IsNotNull(properties);
+            Assert.AreEqual(properties["TestGlobalProperty"].AsString, "TestGlobalValue");
         }
 
         [Test]
@@ -106,29 +106,29 @@ namespace log4net_MongoDB.Tests
 
             log.Debug("Oh, Mongo !");
             var retrieved = collection.FindOneAs<BsonDocument>();
-            
+
             Assert.IsNotNull(retrieved);
             var properties = retrieved["properties"] as BsonDocument;
             Assert.IsNotNull(properties);
-            
-            Assert.AreEqual( properties["ThreadProperty"].AsString, "ThreadValue" );
+
+            Assert.AreEqual(properties["ThreadProperty"].AsString, "ThreadValue");
         }
 
 
-        [ Test ]
+        [Test]
         public void TestMachineName()
         {
-            log.Debug( "Oh, Mongo !" );
+            log.Debug("Oh, Mongo !");
             var retrieved = collection.FindOneAs<BsonDocument>();
-            Assert.IsNotNull( retrieved );
-            Assert.AreEqual( retrieved["machineName"].AsString, Environment.MachineName );
+            Assert.IsNotNull(retrieved);
+            Assert.AreEqual(retrieved["machineName"].AsString, Environment.MachineName);
         }
 
         [Test]
         public void TestMultipleEvents()
         {
             const int numberOfEvents = 12;
-            for(var i = 0; i < numberOfEvents; ++i)
+            for (var i = 0; i < numberOfEvents; ++i)
             {
                 log.Debug(i);
             }
@@ -147,12 +147,12 @@ namespace log4net_MongoDB.Tests
 
             // verify values
             Assert.AreEqual(retrieved["level"].AsString, "ERROR", "Exception not logged with ERROR level");
-            
+
             var exception = retrieved["exception"] as BsonDocument;
             Assert.IsNotNull(exception, "Log event does not contain expected exception");
             Assert.AreEqual(exception["message"].AsString, "Something wrong happened", "Exception message different from expected");
 
-            
+
             var innerException = exception["innerException"] as BsonDocument;
             Assert.IsNotNull(innerException, "Log event does not contain expected inner exception");
             Assert.AreEqual(innerException["message"].AsString, "I'm the inner", "Inner exception message different from expected");
