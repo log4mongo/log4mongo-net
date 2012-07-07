@@ -4,3 +4,12 @@
 /src/*/bin/
 /src/*/obj/
 /src/*/*.user
+
+# Managed by NuGet
+/lib/
+/tools/NUnit.Runners/
+
+# build files
+/TestResult.xml
+/build/
+/src/SharedAssemblyInfo.cs

@@ -18,7 +18,7 @@ Include all DLLs in bin/ directory to your project.
 
 log4net appender sample XML configuration::
 
-<appender name="MongoAppender" type="log4net.Appender.MongoDBAppender, log4mongo-net">
+<appender name="MongoAppender" type="Log4MongoAppender, log4mongo-net">
   <!-- MongoDB connection options -->
   <host value="localhost" />
   <port value="27017" />

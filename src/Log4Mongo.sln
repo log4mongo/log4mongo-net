@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo", "Log4Mongo\Log4Mongo.csproj", "{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo.Tests", "Log4Mongo.Tests\Log4Mongo.Tests.csproj", "{69DD514D-D096-4279-BA9D-4331EE4A6DE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
