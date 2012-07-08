@@ -3,11 +3,11 @@
   <metadata>
     <id>log4mongo-net</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>log4mongo-net</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>https://raw.github.com/log4mongo/log4mongo-net/master/LICENSE</licenseUrl>
-    <projectUrl>https://raw.github.com/log4mongo/log4mongo-net</projectUrl>
+    <projectUrl>https://github.com/log4mongo/log4mongo-net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <tags>log logging log4net debug diagnostic trace db database nosql mongo mongodb appender log4net apache</tags>

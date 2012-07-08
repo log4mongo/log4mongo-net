@@ -3,10 +3,12 @@ MongoDB appender for log4net
 
 The title says it all. Check [Log4Net site](http://logging.apache.org/log4net/) or [MongoDB site](http://www.mongodb.org/) if you need more info.
 
+This is the official .NET implementation for the [log4mongo](http://log4mongo.org) project
+
 Installation
 ------------
 
-[Get it on NuGet](http://nuget.org/packages/Log4Mongo), or download sources and run build.cmd to build
+[Get it on NuGet](https://nuget.org/packages/log4mongo-net), or download sources and run build.cmd to build
 
 Appender configuration sample
 -----------------------------
@@ -55,4 +57,4 @@ Appender configuration sample
 License
 -------
 
-[APACHE 2](https://raw.github.com/gimmi/Log4Mongo/master/LICENSE)
+[BSD 3](https://raw.github.com/log4mongo/log4mongo-net/master/LICENSE)
