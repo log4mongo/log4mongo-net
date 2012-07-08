@@ -49,7 +49,7 @@ Task Publish -Depends Clean, Test {
     New-Item $build_dir\build -type directory
 
    	Exec { & "$build_dir\tools\nuget\nuget.exe" pack "$build_dir\src\Log4Mongo\Log4Mongo.csproj" -Build -OutputDirectory $build_dir\build, -Symbols -Prop Configuration=$build_cfg }
-	Exec { & "$build_dir\tools\nuget\nuget.exe" push "$build_dir\build\log4mongo-net.$version.nupkg" -CreateOnly }
+	Exec { & "$build_dir\tools\nuget\nuget.exe" push "$build_dir\build\log4mongo-net.$version.nupkg" }
 
     $version = $version -split "\."
     $version[2] =  [System.Int32]::Parse($version[2]) + 1
