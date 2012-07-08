@@ -49,7 +49,7 @@ Task Publish -Depends Clean, Test {
     New-Item $build_dir\build -type directory
 
    	Exec { & "$build_dir\tools\nuget\nuget.exe" pack "$build_dir\src\Log4Mongo\Log4Mongo.csproj" -Build -OutputDirectory $build_dir\build, -Symbols -Prop Configuration=$build_cfg }
-	#Exec { & "$build_dir\tools\nuget\nuget.exe" push "$build_dir\build\Log4Mongo.$version.nupkg" }
+	Exec { & "$build_dir\tools\nuget\nuget.exe" push "$build_dir\build\Log4Mongo.$version.nupkg" -CreateOnly }
 
     $version = $version -split "\."
     $version[2] =  [System.Int32]::Parse($version[2]) + 1
@@ -57,5 +57,5 @@ Task Publish -Depends Clean, Test {
 }
 
 Task Clean {
-	#Exec { git --git-dir="$build_dir\.git" --work-tree="$build_dir" clean -d -x -f }
+	Exec { git --git-dir="$build_dir\.git" --work-tree="$build_dir" clean -d -x -f }
 }
