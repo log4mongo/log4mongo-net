@@ -45,7 +45,7 @@ namespace Log4Mongo
 			// location information, if available
 			if(loggingEvent.LocationInformation != null)
 			{
-				toReturn["fileName"] = loggingEvent.LocationInformation.FileName;
+				toReturn["fileName"] = loggingEvent.LocationInformation.FileName??string.Empty;
 				toReturn["method"] = loggingEvent.LocationInformation.MethodName;
 				toReturn["lineNumber"] = loggingEvent.LocationInformation.LineNumber;
 				toReturn["className"] = loggingEvent.LocationInformation.ClassName;
