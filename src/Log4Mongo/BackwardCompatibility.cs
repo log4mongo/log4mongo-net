@@ -42,15 +42,14 @@ namespace Log4Mongo
 			toReturn["domain"] = loggingEvent.Domain;
 			toReturn["machineName"] = Environment.MachineName;
 
-            // location information, if available
-            if (loggingEvent.LocationInformation != null)
-            {
-                // in release build, filename cannot be retrieved
-                toReturn[ "fileName" ] = loggingEvent.LocationInformation.FileName ?? string.Empty;
-                toReturn[ "method" ] = loggingEvent.LocationInformation.MethodName;
-                toReturn[ "lineNumber" ] = loggingEvent.LocationInformation.LineNumber;
-                toReturn[ "className" ] = loggingEvent.LocationInformation.ClassName;
-            }
+			// location information, if available
+			if(loggingEvent.LocationInformation != null)
+			{
+				toReturn["fileName"] = loggingEvent.LocationInformation.FileName;
+				toReturn["method"] = loggingEvent.LocationInformation.MethodName;
+				toReturn["lineNumber"] = loggingEvent.LocationInformation.LineNumber;
+				toReturn["className"] = loggingEvent.LocationInformation.ClassName;
+			}
 
 			// exception information
 			if(loggingEvent.ExceptionObject != null)
