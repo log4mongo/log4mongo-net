@@ -9,8 +9,24 @@ using log4net.Core;
 
 namespace Log4Mongo
 {
-	public class MongoDBAppender : AppenderSkeleton
+    public class MongoDBAppender : AppenderSkeleton
 	{
+        /// <summary>
+        /// The behavior of explictly defined fields
+        /// </summary>
+        public enum DefinedFieldBehavior
+        {
+            /// <summary>
+            /// If any fields are defined they are used exclusively and no other fields
+            /// </summary>
+            Explict = 0,
+            /// <summary>
+            /// If fields are defined they are added to the backwards compatible fields (All). If
+            /// a field name exists in both (i.e. Level) the defined field will overwrite the default.
+            /// </summary>
+            Additive
+        }
+
 		private readonly List<MongoAppenderFileld> _fields = new List<MongoAppenderFileld>();
 
 		/// <summary>
@@ -26,6 +42,12 @@ namespace Log4Mongo
 		/// Defaults to "logs"
 		/// </summary>
 		public string CollectionName { get; set; }
+
+        /// <summary>
+        /// How defined fields are treated.
+        /// Defaults to Explict
+        /// </summary>
+        public DefinedFieldBehavior FieldBehavior { get; set; }
 
 		#region Deprecated
 
@@ -102,18 +124,32 @@ namespace Log4Mongo
 
 		private BsonDocument BuildBsonDocument(LoggingEvent log)
 		{
-			if(_fields.Count == 0)
-			{
-				return BackwardCompatibility.BuildBsonDocument(log);
+            if (FieldBehavior == DefinedFieldBehavior.Explict)
+            {
+                return _fields.Count == 0
+                           ? BackwardCompatibility.BuildBsonDocument(log)
+                           : AddFieldsToDocument(new BsonDocument(), log);
 			}
-			var doc = new BsonDocument();
-			foreach(MongoAppenderFileld field in _fields)
-			{
-				object value = field.Layout.Format(log);
-				BsonValue bsonValue = BsonValue.Create(value);
-				doc.Add(field.Name, bsonValue);
-			}
-			return doc;
+		    return AddFieldsToDocument(BackwardCompatibility.BuildBsonDocument(log), log);
 		}
+
+        private BsonDocument AddFieldsToDocument(BsonDocument doc, LoggingEvent log)
+        {
+            foreach (MongoAppenderFileld field in _fields)
+            {
+                object value = field.Layout.Format(log);
+                BsonValue bsonValue = BsonValue.Create(value);
+                if (doc.Contains(field.Name))
+                {
+                    doc.Set(field.Name, bsonValue);
+                } 
+                else
+                {
+                    doc.Add(field.Name, bsonValue);
+                }
+            }
+            return doc;
+        }
+        
 	}
 }

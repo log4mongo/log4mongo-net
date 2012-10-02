@@ -95,7 +95,7 @@ namespace Log4Mongo.Tests
 
 			var doc = _collection.FindOneAs<BsonDocument>();
 			doc.GetElement("timestamp").Value.Should().Be.OfType<BsonDateTime>();
-			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.Now);
+			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.UtcNow);
 		}
 
 		[Test]
@@ -211,7 +211,7 @@ namespace Log4Mongo.Tests
 			}
 
 			var doc = _collection.FindOneAs<BsonDocument>();
-			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.Now);
+			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.UtcNow);
 			doc.GetElement("level").Value.AsString.Should().Be.EqualTo("FATAL");
 			doc.GetElement("thread").Value.AsString.Should().Be.EqualTo(Thread.CurrentThread.Name);
 			doc.GetElement("userName").Value.AsString.Should().Be.EqualTo(WindowsIdentity.GetCurrent().Name);
@@ -286,5 +286,112 @@ namespace Log4Mongo.Tests
 			_collection.FindAllAs<BsonDocument>().Select(x => x.GetElement("message").Value.AsString).Should().Have.SameSequenceAs(new[] { "1", "2", "3", "4", "5", "6" });
 
 		}
+
+        [Test]
+        public void Should_add_to_log_standard_document_if_fieldbehavior_additive()
+        {
+            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+<log4net>
+	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+		<connectionString value='mongodb://localhost' />
+        <fieldBehavior value='Additive' />
+        <field>
+			<name value='added' />
+			<layout type='log4net.Layout.PatternLayout' value='%properties{added}' />
+		</field>
+	</appender>
+	<root>
+		<level value='ALL' />
+		<appender-ref ref='MongoDBAppender' />
+	</root>
+</log4net>
+")));
+            var target = LogManager.GetLogger("Test");
+
+            GlobalContext.Properties["GlobalContextProperty"] = "GlobalContextValue";
+            ThreadContext.Properties["ThreadContextProperty"] = "ThreadContextValue";
+            ThreadContext.Properties["added"] = "AddedValue";
+
+            try
+            {
+                throw new ApplicationException("BOOM");
+            }
+            catch (Exception e)
+            {
+                target.Fatal("a log", e);
+            }
+
+            var doc = _collection.FindOneAs<BsonDocument>();
+            doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.UtcNow);
+            doc.GetElement("level").Value.AsString.Should().Be.EqualTo("FATAL");
+            doc.GetElement("thread").Value.AsString.Should().Be.EqualTo(Thread.CurrentThread.Name);
+            doc.GetElement("userName").Value.AsString.Should().Be.EqualTo(WindowsIdentity.GetCurrent().Name);
+            doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
+            doc.GetElement("loggerName").Value.AsString.Should().Be.EqualTo("Test");
+            doc.GetElement("domain").Value.AsString.Should().Be.EqualTo(AppDomain.CurrentDomain.FriendlyName);
+            doc.GetElement("machineName").Value.AsString.Should().Be.EqualTo(Environment.MachineName);
+
+            var exception = doc.GetElement("exception").Value.AsBsonDocument;
+            exception.GetElement("message").Value.AsString.Should().Be.EqualTo("BOOM");
+
+            var properties = doc.GetElement("properties").Value.AsBsonDocument;
+            properties.GetElement("GlobalContextProperty").Value.AsString.Should().Be.EqualTo("GlobalContextValue");
+            properties.GetElement("ThreadContextProperty").Value.AsString.Should().Be.EqualTo("ThreadContextValue");
+
+            doc.GetElement("added").Value.AsString.Should().Be.EqualTo("AddedValue");
+        }
+
+        [Test]
+        public void Should_replace_standard_document_field_if_fieldbehavior_additive()
+        {
+            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+<log4net>
+	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+		<connectionString value='mongodb://localhost' />
+        <fieldBehavior value='Additive' />
+        <field>
+			<name value='domain' />
+			<layout type='log4net.Layout.PatternLayout' value='%properties{added}' />
+		</field>
+	</appender>
+	<root>
+		<level value='ALL' />
+		<appender-ref ref='MongoDBAppender' />
+	</root>
+</log4net>
+")));
+            var target = LogManager.GetLogger("Test");
+
+            GlobalContext.Properties["GlobalContextProperty"] = "GlobalContextValue";
+            ThreadContext.Properties["ThreadContextProperty"] = "ThreadContextValue";
+            ThreadContext.Properties["added"] = "AddedValue";
+
+            try
+            {
+                throw new ApplicationException("BOOM");
+            }
+            catch (Exception e)
+            {
+                target.Fatal("a log", e);
+            }
+
+            var doc = _collection.FindOneAs<BsonDocument>();
+            doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.UtcNow);
+            doc.GetElement("level").Value.AsString.Should().Be.EqualTo("FATAL");
+            doc.GetElement("thread").Value.AsString.Should().Be.EqualTo(Thread.CurrentThread.Name);
+            doc.GetElement("userName").Value.AsString.Should().Be.EqualTo(WindowsIdentity.GetCurrent().Name);
+            doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
+            doc.GetElement("loggerName").Value.AsString.Should().Be.EqualTo("Test");
+            doc.GetElement("domain").Value.AsString.Should().Be.EqualTo("AddedValue");
+            doc.GetElement("machineName").Value.AsString.Should().Be.EqualTo(Environment.MachineName);
+
+            var exception = doc.GetElement("exception").Value.AsBsonDocument;
+            exception.GetElement("message").Value.AsString.Should().Be.EqualTo("BOOM");
+
+            var properties = doc.GetElement("properties").Value.AsBsonDocument;
+            properties.GetElement("GlobalContextProperty").Value.AsString.Should().Be.EqualTo("GlobalContextValue");
+            properties.GetElement("ThreadContextProperty").Value.AsString.Should().Be.EqualTo("ThreadContextValue");
+
+        }
 	}
 }
