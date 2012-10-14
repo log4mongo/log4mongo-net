@@ -45,10 +45,10 @@ namespace Log4Mongo
 			// location information, if available
 			if(loggingEvent.LocationInformation != null)
 			{
-				toReturn["fileName"] = loggingEvent.LocationInformation.FileName;
-				toReturn["method"] = loggingEvent.LocationInformation.MethodName;
-				toReturn["lineNumber"] = loggingEvent.LocationInformation.LineNumber;
-				toReturn["className"] = loggingEvent.LocationInformation.ClassName;
+			    toReturn["fileName"] = loggingEvent.LocationInformation.FileName ?? String.Empty;
+			    toReturn["method"] = loggingEvent.LocationInformation.MethodName ?? String.Empty;
+			    toReturn["lineNumber"] = loggingEvent.LocationInformation.LineNumber ?? String.Empty;
+			    toReturn["className"] = loggingEvent.LocationInformation.ClassName ?? String.Empty;
 			}
 
 			// exception information

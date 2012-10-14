@@ -26,6 +26,14 @@ Appender configuration sample
 		Optional, Defaults to "logs"
 		-->
 		<collectionName value="logs" />
+		<!--
+			Defined fields can be Explicit or Additive. If Explict (default) you only get the fields defined
+			in the appender sent to Mongo. If Additive you get the default fields + the defined fields. If
+			a defined field exists as a default, it is overwritten by the defined field. Additive FieldBehavior
+			allows Global or Thread context items to be first class instead of under the "properties" field
+			while still retaining the defaults.
+		<fieldBehavior value="Additive" />
+		-->
 		<field>
 			<name value="timestamp" />
 			<layout type="log4net.Layout.RawTimeStampLayout" />
