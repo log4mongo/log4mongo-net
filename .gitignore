@@ -13,3 +13,4 @@
 /TestResult.xml
 /build/
 /src/SharedAssemblyInfo.cs
+src/_ReSharper.*
