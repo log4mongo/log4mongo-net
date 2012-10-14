@@ -220,6 +220,11 @@ namespace Log4Mongo.Tests
 			doc.GetElement("domain").Value.AsString.Should().Be.EqualTo(AppDomain.CurrentDomain.FriendlyName);
 			doc.GetElement("machineName").Value.AsString.Should().Be.EqualTo(Environment.MachineName);
 
+			doc.GetElement("fileName").Value.AsString.Should().EndWith("MongoDBAppenderTest.cs");
+			doc.GetElement("method").Value.AsString.Should().Be.EqualTo("Should_log_standard_document_if_no_fields_defined");
+			doc.GetElement("lineNumber").Value.AsString.Should().Match(@"\d+");
+			doc.GetElement("className").Value.AsString.Should().Be.EqualTo("Log4Mongo.Tests.MongoDBAppenderTest");
+
 			var exception = doc.GetElement("exception").Value.AsBsonDocument;
 			exception.GetElement("message").Value.AsString.Should().Be.EqualTo("BOOM");
 
