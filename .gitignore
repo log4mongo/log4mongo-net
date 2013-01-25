@@ -6,6 +6,7 @@
 /src/*/*.user
 
 # Managed by NuGet
+/src/packages/
 /lib/
 /tools/NUnit.Runners/
 
