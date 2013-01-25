@@ -95,7 +95,7 @@ namespace Log4Mongo.Tests
 
 			var doc = _collection.FindOneAs<BsonDocument>();
 			doc.GetElement("timestamp").Value.Should().Be.OfType<BsonDateTime>();
-			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.Now);
+			AssertTimestampLogged(doc);
 		}
 
 		[Test]
@@ -211,7 +211,8 @@ namespace Log4Mongo.Tests
 			}
 
 			var doc = _collection.FindOneAs<BsonDocument>();
-			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(DateTime.UtcNow.AddSeconds(-1), DateTime.Now);
+
+			AssertTimestampLogged(doc); 
 			doc.GetElement("level").Value.AsString.Should().Be.EqualTo("FATAL");
 			doc.GetElement("thread").Value.AsString.Should().Be.EqualTo(Thread.CurrentThread.Name);
 			doc.GetElement("userName").Value.AsString.Should().Be.EqualTo(WindowsIdentity.GetCurrent().Name);
@@ -290,6 +291,13 @@ namespace Log4Mongo.Tests
 
 			_collection.FindAllAs<BsonDocument>().Select(x => x.GetElement("message").Value.AsString).Should().Have.SameSequenceAs(new[] { "1", "2", "3", "4", "5", "6" });
 
+		}
+
+		private static void AssertTimestampLogged(BsonDocument doc)
+		{
+			var now = DateTime.UtcNow;
+			var oneSecondAgo = now.AddSeconds(-1);
+			doc.GetElement("timestamp").Value.AsDateTime.Should().Be.IncludedIn(oneSecondAgo, now);
 		}
 	}
 }
