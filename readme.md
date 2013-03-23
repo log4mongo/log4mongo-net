@@ -58,3 +58,10 @@ License
 -------
 
 [BSD 3](https://raw.github.com/log4mongo/log4mongo-net/master/LICENSE)
+
+Credits
+-------
+
+Thanks to [JetBrains](http://www.jetbrains.com/) for providing us licenses for it's excellent tool [ReSharper](http://www.jetbrains.com/resharper/)
+
+![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)
