@@ -76,6 +76,12 @@ namespace Log4Mongo.Tests
 			<name value='exception' />
 			<layout type='log4net.Layout.ExceptionLayout' />
 		</field>
+		<field>
+			<name value='customProperty' />
+			<layout type='log4net.Layout.RawPropertyLayout'>
+				<key value='customProperty' />
+			</layout>
+		</field>
 	</appender>
 	<root>
 		<level value='ALL' />
@@ -180,6 +186,31 @@ namespace Log4Mongo.Tests
 			var doc = _collection.FindOneAs<BsonDocument>();
 			doc.GetElement("numberProperty").Value.Should().Be.OfType<BsonInt32>();
 			doc.GetElement("dateProperty").Value.Should().Be.OfType<BsonDateTime>();
+		}
+
+		[Test]
+		public void Should_log_bsondocument()
+		{
+			var target = GetConfiguredLog();
+			var customProperty = new
+			{
+				Start = DateTime.Now,
+				Finished = DateTime.Now,
+				Input = new
+				{
+					Count = 100
+				},
+				Output = new
+				{
+					Count = 95
+				}
+			};
+			ThreadContext.Properties["customProperty"] = customProperty.ToBsonDocument();
+
+			target.Info("Finished");
+
+			var customPropertyFromDbJson = _collection.FindOneAs<BsonDocument>()["customProperty"].ToJson();
+			customProperty.ToJson().Should().Be.EqualTo(customPropertyFromDbJson);
 		}
 
 		[Test]
