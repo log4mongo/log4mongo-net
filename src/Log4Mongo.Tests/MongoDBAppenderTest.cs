@@ -191,17 +191,14 @@ namespace Log4Mongo.Tests
 		[Test]
 		public void Should_log_bsondocument()
 		{
-			var target = GetConfiguredLog();
-			var customProperty = new
-			{
+			ILog target = GetConfiguredLog();
+			var customProperty = new {
 				Start = DateTime.Now,
 				Finished = DateTime.Now,
-				Input = new
-				{
+				Input = new {
 					Count = 100
 				},
-				Output = new
-				{
+				Output = new {
 					Count = 95
 				}
 			};
@@ -209,8 +206,19 @@ namespace Log4Mongo.Tests
 
 			target.Info("Finished");
 
-			var customPropertyFromDbJson = _collection.FindOneAs<BsonDocument>()["customProperty"].ToJson();
+			string customPropertyFromDbJson = _collection.FindOneAs<BsonDocument>()["customProperty"].ToJson();
 			customProperty.ToJson().Should().Be.EqualTo(customPropertyFromDbJson);
+		}
+
+		[Test]
+		public void Should_tolerate_null_raw_property()
+		{
+			ILog target = GetConfiguredLog();
+			ThreadContext.Properties["customProperty"] = null;
+
+			target.Info("Finished");
+
+			_collection.Count().Should().Be.EqualTo(1);
 		}
 
 		[Test]

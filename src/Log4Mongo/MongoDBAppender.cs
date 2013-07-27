@@ -110,16 +110,8 @@ namespace Log4Mongo
 			foreach(MongoAppenderFileld field in _fields)
 			{
 				object value = field.Layout.Format(log);
-
-				if (value is BsonValue)
-				{
-					doc.Add(field.Name, value as BsonValue);
-				}
-				else
-				{
-					BsonValue bsonValue = BsonValue.Create(value);
-					doc.Add(field.Name, bsonValue);
-				}
+				var bsonValue = value as BsonValue ?? BsonValue.Create(value);
+				doc.Add(field.Name, bsonValue);
 			}
 			return doc;
 		}
