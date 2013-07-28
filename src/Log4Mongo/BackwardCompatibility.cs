@@ -79,7 +79,8 @@ namespace Log4Mongo
 			var toReturn = new BsonDocument {
 				{"message", ex.Message}, 
 				{"source", ex.Source}, 
-				{"stackTrace", ex.StackTrace}
+				{"stackTrace", ex.StackTrace},
+				{"data", ex.Data.ToBsonDocument()}
 			};
 
 			if(ex.InnerException != null)
