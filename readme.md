@@ -54,6 +54,13 @@ Appender configuration sample
 		</field>
 	</appender>
 
+Note about Default Write Concern Change in driver 1.7+
+------------------------------------------------------
+
+[10gen changed the default value for WriteConcern](http://blog.mongodb.org/post/36666163412/introducing-mongoclient). This change is [implemented in MongoDB C# driver starting from 1.7](http://docs.mongodb.org/manual/release-notes/drivers-write-concern/#releases) and is effective only when used with the new `MongoDB.Driver.MongoClient` class.
+
+For logging concern, the old default is usually better so for now Log4Mongo will keep creating database connection in the old way (by using `MongoDB.Driver.MongoServer.Create`). At some point (maybe with a major release) we will switch and start using `MongoDB.Driver.MongoClient` class, so it's best if you explicitly specify WriteConcern related options in the connection string, as described here: [Write Concern Options](http://docs.mongodb.org/manual/reference/connection-string/#write-concern-options)
+
 License
 -------
 
