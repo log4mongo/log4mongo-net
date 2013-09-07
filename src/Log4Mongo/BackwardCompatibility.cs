@@ -20,7 +20,7 @@ namespace Log4Mongo
 				mongoConnectionString.AppendFormat(";Username={0};Password={1}", appender.UserName, appender.Password);
 			}
 
-			MongoServer connection = MongoServer.Create(mongoConnectionString.ToString());
+			MongoServer connection = MongoServer.Create(mongoConnectionString.ToString()); // TODO Should be replaced with MongoClient, but this will change default for WriteConcern. See http://blog.mongodb.org/post/36666163412/introducing-mongoclient and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
 			connection.Connect();
 			return connection.GetDatabase(appender.DatabaseName ?? "log4net_mongodb");
 		}
