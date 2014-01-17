@@ -22,10 +22,16 @@ Appender configuration sample
 		-->
 		<connectionString value="mongodb://localhost" />
 		<!-- 
+		Name of connectionString you wish to use from your web.config connectionStrings group
+		Optional, If not provided will use connectionString instead
+		-->
+		<connectionStringName value="mongo-log4net" />
+		<!-- 
 		Name of the collection in database
 		Optional, Defaults to "logs"
 		-->
 		<collectionName value="logs" />
+		
 		<field>
 			<name value="timestamp" />
 			<layout type="log4net.Layout.RawTimeStampLayout" />
