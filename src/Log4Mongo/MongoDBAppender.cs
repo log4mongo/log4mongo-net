@@ -21,11 +21,11 @@ namespace Log4Mongo
 		/// </summary>
 		public string ConnectionString { get; set; }
 
-        /// <summary>
-        /// The connectionString name to use in the connectionStrings section of your *.config file
-        /// If not specified or connectionString name does not exist will use ConnectionString value
-        /// </summary>
-        public string ConnectionStringName { get; set; }
+		/// <summary>
+		/// The connectionString name to use in the connectionStrings section of your *.config file
+		/// If not specified or connectionString name does not exist will use ConnectionString value
+		/// </summary>
+		public string ConnectionStringName { get; set; }
 
 		/// <summary>
 		/// Name of the collection in database
@@ -96,21 +96,26 @@ namespace Log4Mongo
 
 		private MongoDatabase GetDatabase()
 		{
-		    if (!String.IsNullOrWhiteSpace(ConnectionStringName))
-		    {
-                var connectionStringSetting = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+			if (!String.IsNullOrWhiteSpace(ConnectionStringName))
+			{
+				ConnectionStringSettings connectionStringSetting = ConfigurationManager.ConnectionStrings[ConnectionStringName];
 
-		        if (connectionStringSetting != null)
-		            ConnectionString = connectionStringSetting.ConnectionString;
-		    }
+				if (connectionStringSetting != null)
+					ConnectionString = connectionStringSetting.ConnectionString;
+			}
 
-			if(string.IsNullOrWhiteSpace(ConnectionString))
+			if (string.IsNullOrWhiteSpace(ConnectionString))
 			{
 				return BackwardCompatibility.GetDatabase(this);
 			}
-			
-            MongoUrl url = MongoUrl.Create(ConnectionString);
-			MongoServer conn = MongoServer.Create(url); // TODO Should be replaced with MongoClient, but this will change default for WriteConcern. See http://blog.mongodb.org/post/36666163412/introducing-mongoclient and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
+
+			MongoUrl url = MongoUrl.Create(ConnectionString);
+
+			// TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
+			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
+			// and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
+			MongoServer conn = MongoServer.Create(url);
+
 			MongoDatabase db = conn.GetDatabase(url.DatabaseName ?? "log4net");
 			return db;
 		}

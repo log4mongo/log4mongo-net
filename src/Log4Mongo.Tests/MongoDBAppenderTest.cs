@@ -273,38 +273,16 @@ namespace Log4Mongo.Tests
 			properties.GetElement("ThreadContextProperty").Value.AsString.Should().Be.EqualTo("ThreadContextValue");
 		}
 
-        [Test]
-        public void Should_use_legacy_connection_configuration_when_no_connectionstring_defined()
-        {
-            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
-<log4net>
-        <appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
-                <host value='localhost' />
-                <port value='27017' />
-                <databaseName value='log4net' />
-                <collectionName value='logs' />
-        </appender>
-        <root>
-                <level value='ALL' />
-                <appender-ref ref='MongoDBAppender' />
-        </root>
-</log4net>
-")));
-            var target = LogManager.GetLogger("Test");
-
-            target.Info("a log");
-
-            var doc = _collection.FindOneAs<BsonDocument>();
-            doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
-        }
-
-	    [Test]
-	    public void Should_use_connection_from_connectionstrings_section_if_provided()
-	    {
-            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+		[Test]
+		public void Should_use_legacy_connection_configuration_when_no_connectionstring_defined()
+		{
+			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
-        <connectionStringName value='mongodb-log4net' /> <!-- see App.config for value to use -->
+		<host value='localhost' />
+		<port value='27017' />
+		<databaseName value='log4net' />
+		<collectionName value='logs' />
 	</appender>
 	<root>
 		<level value='ALL' />
@@ -312,22 +290,21 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-            var target = LogManager.GetLogger("Test");
+			ILog target = LogManager.GetLogger("Test");
 
-            target.Info("a log");
+			target.Info("a log");
 
-            var doc = _collection.FindOneAs<BsonDocument>();
-            doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
-	    }
+			var doc = _collection.FindOneAs<BsonDocument>();
+			doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
+		}
 
-        [Test]
-        public void Should_use_connection_from_connectionstring_if_provided_connectionstringname_is_wrong()
-        {
-            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+		[Test]
+		public void Should_use_connection_from_connectionstrings_section_if_provided()
+		{
+			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
-        <connectionStringName value='miss-spelt-connection-string' /> <!-- see App.config for missing name -->
-        <connectionString value='mongodb://localhost' />
+		<connectionStringName value='mongodb-log4net' /> <!-- see App.config for value to use -->
 	</appender>
 	<root>
 		<level value='ALL' />
@@ -335,15 +312,38 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-            var target = LogManager.GetLogger("Test");
+			ILog target = LogManager.GetLogger("Test");
 
-            target.Info("a log");
+			target.Info("a log");
 
-            var doc = _collection.FindOneAs<BsonDocument>();
-            doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
-        }
+			var doc = _collection.FindOneAs<BsonDocument>();
+			doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
+		}
 
-	    [Test]
+		[Test]
+		public void Should_use_connection_from_connectionstring_if_provided_connectionstringname_is_wrong()
+		{
+			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+<log4net>
+	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+		<connectionStringName value='miss-spelt-connection-string' /> <!-- see App.config for missing name -->
+		<connectionString value='mongodb://localhost' />
+	</appender>
+	<root>
+		<level value='ALL' />
+		<appender-ref ref='MongoDBAppender' />
+	</root>
+</log4net>
+")));
+			ILog target = LogManager.GetLogger("Test");
+
+			target.Info("a log");
+
+			var doc = _collection.FindOneAs<BsonDocument>();
+			doc.GetElement("message").Value.AsString.Should().Be.EqualTo("a log");
+		}
+
+		[Test]
 		public void Should_log_in_batch()
 		{
 			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
