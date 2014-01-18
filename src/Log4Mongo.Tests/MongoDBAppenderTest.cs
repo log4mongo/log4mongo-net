@@ -246,6 +246,7 @@ namespace Log4Mongo.Tests
 			}
 			catch (Exception e)
 			{
+			    e.Data.Add("key1", "value1");
 				target.Fatal("a log", e);
 			}
 
@@ -267,6 +268,7 @@ namespace Log4Mongo.Tests
 
 			var exception = doc.GetElement("exception").Value.AsBsonDocument;
 			exception.GetElement("message").Value.AsString.Should().Be.EqualTo("BOOM");
+			exception.GetElement("data").Value.AsBsonDocument.GetElement("key1").Value.AsString.Should().Be.EqualTo("value1");
 
 			var properties = doc.GetElement("properties").Value.AsBsonDocument;
 			properties.GetElement("GlobalContextProperty").Value.AsString.Should().Be.EqualTo("GlobalContextValue");
