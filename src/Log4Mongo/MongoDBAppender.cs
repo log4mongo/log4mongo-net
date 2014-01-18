@@ -94,22 +94,22 @@ namespace Log4Mongo
 			return collection;
 		}
 
+		private string GetConnectionString()
+		{
+			ConnectionStringSettings connectionStringSetting = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+			return connectionStringSetting != null ? connectionStringSetting.ConnectionString : ConnectionString;
+		}
+
 		private MongoDatabase GetDatabase()
 		{
-			if (!String.IsNullOrWhiteSpace(ConnectionStringName))
-			{
-				ConnectionStringSettings connectionStringSetting = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+			string connStr = GetConnectionString();
 
-				if (connectionStringSetting != null)
-					ConnectionString = connectionStringSetting.ConnectionString;
-			}
-
-			if (string.IsNullOrWhiteSpace(ConnectionString))
+			if (string.IsNullOrWhiteSpace(connStr))
 			{
 				return BackwardCompatibility.GetDatabase(this);
 			}
 
-			MongoUrl url = MongoUrl.Create(ConnectionString);
+			MongoUrl url = MongoUrl.Create(connStr);
 
 			// TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
 			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
