@@ -43,7 +43,7 @@ Task Test -Depends Compile {
     Exec { & "$build_dir\tools\NUnit.Runners\tools\nunit-console.exe" /nologo /noresult /framework=4.0.30319 @TestDlls }
 }
 
-Task Publish -Depends Clean, Test {
+Task Publish -Depends Test {
     $version = Get-Content $build_dir\version.txt
     
     New-Item $build_dir\build -type directory
@@ -54,8 +54,4 @@ Task Publish -Depends Clean, Test {
     $version = $version -split "\."
     $version[2] =  [System.Int32]::Parse($version[2]) + 1
     $version -join "." | Out-File  $build_dir\version.txt -Encoding 'utf8'
-}
-
-Task Clean {
-	Exec { git --git-dir="$build_dir\.git" --work-tree="$build_dir" clean -d -x -f }
 }
