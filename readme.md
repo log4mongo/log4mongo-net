@@ -22,8 +22,8 @@ Appender configuration sample
 		-->
 		<connectionString value="mongodb://localhost" />
 		<!-- 
-		Name of connectionString you wish to use from your web.config connectionStrings group
-		Optional, If not provided will use connectionString instead
+		Name of connectionString defined in web/app.config connectionStrings group, the format is the same as connectionString value.
+		Optional, If not provided will use connectionString value
 		-->
 		<connectionStringName value="mongo-log4net" />
 		<!-- 
