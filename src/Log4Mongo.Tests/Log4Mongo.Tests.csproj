@@ -34,14 +34,17 @@
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\lib\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    <Reference Include="MongoDB.Bson, Version=1.9.1.221, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\mongocsharpdriver.1.9.1\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\lib\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
+    <Reference Include="MongoDB.Driver, Version=1.9.1.221, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\mongocsharpdriver.1.9.1\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\lib\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="SharpTestsEx">
       <HintPath>..\..\lib\SharpTestsEx.1.1.1\lib\SharpTestsEx.dll</HintPath>
