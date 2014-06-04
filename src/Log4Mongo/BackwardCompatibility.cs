@@ -60,18 +60,18 @@ namespace Log4Mongo
 
 			// properties
 			PropertiesDictionary compositeProperties = loggingEvent.GetProperties();
-			if(compositeProperties != null && compositeProperties.Count > 0)
-			{
-				var properties = new BsonDocument();
-				foreach(DictionaryEntry entry in compositeProperties)
-				{
-					properties.Add(entry.Key.ToString(), entry.Value.ToString());
-				}
+		    if (compositeProperties == null || compositeProperties.Count <= 0) 
+                return toReturn;
+		    
+            var properties = new BsonDocument();
+		    foreach(DictionaryEntry entry in compositeProperties)
+		    {
+		        properties.Add(entry.Key.ToString().Replace("log4net:", ""), entry.Value.ToString());
+		    }
 
-				toReturn.Add("properties", properties);
-			}
+		    toReturn.Add("properties", properties);
 
-			return toReturn;
+		    return toReturn;
 		}
 
 		private static BsonDocument BuildExceptionBsonDocument(Exception ex)
