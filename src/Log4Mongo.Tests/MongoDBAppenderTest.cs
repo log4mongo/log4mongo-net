@@ -92,6 +92,22 @@ namespace Log4Mongo.Tests
 			return LogManager.GetLogger("Test");
 		}
 
+        private ILog GetDefaultConfiguredLog()
+        {
+            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+<log4net>
+	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+		<connectionString value='mongodb://localhost' />		
+	</appender>
+	<root>
+		<level value='ALL' />
+		<appender-ref ref='MongoDBAppender' />
+	</root>
+</log4net>
+")));
+            return LogManager.GetLogger("Test");
+        }
+
 		[Test]
 		public void Should_log_timestamp()
 		{
@@ -187,6 +203,26 @@ namespace Log4Mongo.Tests
 			doc.GetElement("numberProperty").Value.Should().Be.OfType<BsonInt32>();
 			doc.GetElement("dateProperty").Value.Should().Be.OfType<BsonDateTime>();
 		}
+
+       
+            
+		[Test]
+		public void Should_remove_predicate_log4net_specific_key_name_properties()
+		{
+            var target = GetDefaultConfiguredLog();
+
+		    var date = DateTime.Now;
+			GlobalContext.Properties["log4net:numberProperty"] = 123;
+            ThreadContext.Properties["log4net:dateProperty"] = date;
+
+			target.Info("a log");
+	
+			var doc = _collection.FindOneAs<BsonDocument>();
+            ((BsonDocument)doc.GetElement("properties").Value).GetElement("numberProperty").Value = "123";
+            ((BsonDocument)doc.GetElement("properties").Value).GetElement("dateProperty").Value = date;
+		}
+
+
 
 		[Test]
 		public void Should_log_bsondocument()
