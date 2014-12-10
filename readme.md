@@ -5,6 +5,8 @@ The title says it all. Check [Log4Net site](http://logging.apache.org/log4net/) 
 
 This is the official .NET implementation for the [log4mongo](http://log4mongo.org) project
 
+To get started, check out [@sammleach](https://twitter.com/sammleach) blog post: [.NET Logging with log4mongo-net](http://samlea.ch/dev/log4mongo-net/)
+
 Installation
 ------------
 
