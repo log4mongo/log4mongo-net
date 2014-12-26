@@ -102,14 +102,14 @@ namespace Log4Mongo
 
 		private MongoDatabase GetDatabase()
 		{
-			string connStr = GetConnectionString();
+			var connectionString = GetConnectionString();
 
-			if (string.IsNullOrWhiteSpace(connStr))
+			if (string.IsNullOrWhiteSpace(connectionString))
 			{
 				return BackwardCompatibility.GetDatabase(this);
 			}
 
-			MongoUrl url = MongoUrl.Create(connStr);
+			MongoUrl url = MongoUrl.Create(connectionString);
 
 			// TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
 			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
