@@ -109,15 +109,12 @@ namespace Log4Mongo
 				return BackwardCompatibility.GetDatabase(this);
 			}
 
-			MongoUrl url = MongoUrl.Create(connStr);
-
-			// TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
-			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
-			// and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
-			MongoServer conn = MongoServer.Create(url);
-
-			MongoDatabase db = conn.GetDatabase(url.DatabaseName ?? "log4net");
-			return db;
+            var url  = MongoUrl.Create(connStr);
+		    var mongoClient = new MongoClient(url);
+		    var database =
+		        mongoClient.GetServer()
+		            .GetDatabase(url.DatabaseName ?? "log4net");
+		    return database;
 		}
 
 		private BsonDocument BuildBsonDocument(LoggingEvent log)

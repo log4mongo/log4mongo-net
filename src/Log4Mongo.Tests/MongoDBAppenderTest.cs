@@ -24,8 +24,11 @@ namespace Log4Mongo.Tests
 			GlobalContext.Properties.Clear();
 			ThreadContext.Properties.Clear();
 
-			MongoServer conn = MongoServer.Create("mongodb://localhost");
-			MongoDatabase db = conn.GetDatabase("log4net");
+            var url = MongoUrl.Create("mongodb://localhost");
+            var mongoClient = new MongoClient(url);
+            var db =
+                mongoClient.GetServer()
+                    .GetDatabase("log4net");
 			_collection = db.GetCollection("logs");
 			_collection.RemoveAll();
 		}
