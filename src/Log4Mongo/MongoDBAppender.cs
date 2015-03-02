@@ -110,7 +110,12 @@ namespace Log4Mongo
 			}
 
             var url  = MongoUrl.Create(connStr);
-		    var mongoClient = new MongoClient(url);
+		    var settings = MongoClientSettings.FromUrl(url);
+
+		    if (url.W == null)
+                settings.WriteConcern = WriteConcern.Unacknowledged;
+            var mongoClient = new MongoClient(settings);
+
 		    var database =
 		        mongoClient.GetServer()
 		            .GetDatabase(url.DatabaseName ?? "log4net");
