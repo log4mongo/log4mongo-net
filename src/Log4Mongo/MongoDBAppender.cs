@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using log4net.Appender;
 using log4net.Core;
 
@@ -32,6 +33,18 @@ namespace Log4Mongo
 		/// Defaults to "logs"
 		/// </summary>
 		public string CollectionName { get; set; }
+
+		/// <summary>
+		/// Maximum number of documents in collection
+		/// See http://docs.mongodb.org/manual/core/capped-collections/
+		/// </summary>
+		public int NewCollectionMaxDocs { get; set; }
+
+		/// <summary>
+		/// Maximum size of collection
+		/// See http://docs.mongodb.org/manual/core/capped-collections/
+		/// </summary>
+		public int NewCollectionMaxSize { get; set; }
 
 		#region Deprecated
 
@@ -90,8 +103,39 @@ namespace Log4Mongo
 		private MongoCollection GetCollection()
 		{
 			var db = GetDatabase();
-			MongoCollection collection = db.GetCollection(CollectionName ?? "logs");
+			var collectionName = CollectionName ?? "logs";
+
+			EnsureCollectionExists(db, collectionName);
+
+			MongoCollection collection = db.GetCollection(collectionName);
 			return collection;
+		}
+
+		private void EnsureCollectionExists(MongoDatabase db, string collectionName)
+		{
+			if (!db.CollectionExists(collectionName))
+			{
+				CreateCollection(db, collectionName);
+			}
+		}
+
+		private void CreateCollection(MongoDatabase db, string collectionName)
+		{
+			var cob = new CollectionOptionsBuilder();
+
+			if (NewCollectionMaxDocs > 0)
+			{
+				cob = cob.SetCapped(true)
+						 .SetMaxDocuments(NewCollectionMaxDocs);
+			}
+
+			if (NewCollectionMaxSize > 0)
+			{
+				cob = cob.SetCapped(true)
+						 .SetMaxSize(NewCollectionMaxSize);
+			}
+
+			db.CreateCollection(collectionName, cob);
 		}
 
 		private string GetConnectionString()

@@ -33,6 +33,12 @@ Appender configuration sample
 		Optional, Defaults to "logs"
 		-->
 		<collectionName value="logs" />
+
+		<!--
+		Maximum size of newly created collection. Optional, Defaults to creating uncapped collections
+		-->
+		<newCollectionMaxDocs value='5000' />
+		<newCollectionMaxSize value='65536' />
 		
 		<field>
 			<name value="timestamp" />
@@ -77,6 +83,6 @@ License
 Credits
 -------
 
-Thanks to [JetBrains](http://www.jetbrains.com/) for providing us licenses for it's excellent tool [ReSharper](http://www.jetbrains.com/resharper/)
+Thanks to [JetBrains](http://www.jetbrains.com/) for providing us licenses for its excellent tool [ReSharper](http://www.jetbrains.com/resharper/)
 
 ![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)
