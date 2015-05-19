@@ -63,6 +63,7 @@
     <Compile Include="MongoDBAppender.cs" />
     <Compile Include="MongoAppenderFileld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

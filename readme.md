@@ -38,6 +38,12 @@ Appender configuration sample
 		Optional, Defaults to "logs"
 		-->
 		<collectionName value="logs" />
+
+		<!--
+		Maximum size of newly created collection. Optional, Defaults to creating uncapped collections
+		-->
+		<newCollectionMaxSize value='65536' />
+		<newCollectionMaxDocs value='5000' />
 		
 		<field>
 			<!-- Note: this needs to be "timestamp" and NOT "Timestamp"  for the TTL index to work -->
@@ -76,6 +82,6 @@ License
 Credits
 -------
 
-Thanks to [JetBrains](http://www.jetbrains.com/) for providing us licenses for it's excellent tool [ReSharper](http://www.jetbrains.com/resharper/)
+Thanks to [JetBrains](http://www.jetbrains.com/) for providing us licenses for its excellent tool [ReSharper](http://www.jetbrains.com/resharper/)
 
 ![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)
