@@ -78,19 +78,19 @@ namespace Log4Mongo
 		protected override void Append(LoggingEvent loggingEvent)
 		{
 			var collection = GetCollection();
-			collection.Insert(BuildBsonDocument(loggingEvent));
+			collection.InsertOneAsync(BuildBsonDocument(loggingEvent));
 		}
 
 		protected override void Append(LoggingEvent[] loggingEvents)
 		{
 			var collection = GetCollection();
-			collection.InsertBatch(loggingEvents.Select(BuildBsonDocument));
+			collection.InsertManyAsync(loggingEvents.Select(BuildBsonDocument));
 		}
 
-		private MongoCollection GetCollection()
+		private IMongoCollection<BsonDocument> GetCollection()
 		{
 			var db = GetDatabase();
-			MongoCollection collection = db.GetCollection(CollectionName ?? "logs");
+			IMongoCollection<BsonDocument> collection = db.GetCollection<BsonDocument>(CollectionName ?? "logs");
 			return collection;
 		}
 
@@ -100,23 +100,18 @@ namespace Log4Mongo
 			return connectionStringSetting != null ? connectionStringSetting.ConnectionString : ConnectionString;
 		}
 
-		private MongoDatabase GetDatabase()
+		private IMongoDatabase GetDatabase()
 		{
 			string connStr = GetConnectionString();
 
 			if (string.IsNullOrWhiteSpace(connStr))
 			{
-				return BackwardCompatibility.GetDatabase(this);
+				throw new InvalidOperationException("Must provide a valid connection string");
 			}
 
 			MongoUrl url = MongoUrl.Create(connStr);
-
-			// TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
-			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
-			// and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
-			MongoServer conn = MongoServer.Create(url);
-
-			MongoDatabase db = conn.GetDatabase(url.DatabaseName ?? "log4net");
+            MongoClient client = new MongoClient(url);
+		    IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
 			return db;
 		}
 
