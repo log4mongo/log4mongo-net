@@ -4,6 +4,8 @@
 /src/*/bin/
 /src/*/obj/
 /src/*/*.user
+/src/packages
+/src/.vs
 
 # Managed by NuGet
 /lib/
