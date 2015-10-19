@@ -321,6 +321,32 @@ namespace Log4Mongo.Tests
 			});
 		}
 
+        [Test]
+        public async void Should_create_expiry_index()
+        {
+            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+		    <log4net>
+			    <appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+				    <connectionString value='mongodb://localhost' />
+                    <expireAfterSeconds value='5' />
+			    </appender>
+			    <root>
+				    <level value='ALL' />
+				    <appender-ref ref='MongoDBAppender' />
+			    </root>
+		    </log4net>
+		    ")));
+            var target = LogManager.GetLogger("Test");
+
+            target.Info("a log");
+
+            using (var cursor = await _collection.Indexes.ListAsync())
+            {
+                var indexes = await cursor.ToListAsync();
+                var expireAfterIndex = indexes.Single(p => p.ContainsValue(BsonValue.Create("expireAfterSecondsIndex")));
+                expireAfterIndex.GetElement("expireAfterSeconds").Value.AsDouble.Should().Be.EqualTo(5);
+            }
+        }
 
 
 		[Test]

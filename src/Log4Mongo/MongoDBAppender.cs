@@ -33,6 +33,11 @@ namespace Log4Mongo
 		/// </summary>
 		public string CollectionName { get; set; }
 
+        /// <summary>
+        /// If set, create a TTL index to expire after specified number of seconds
+        /// </summary>
+        public long ExpireAfterSeconds { get; set; }
+
 		#region Deprecated
 
         /// <summary>
@@ -79,12 +84,14 @@ namespace Log4Mongo
 		{
 			var collection = GetCollection();
 			collection.InsertOneAsync(BuildBsonDocument(loggingEvent));
+            CreateExpiryAfterIndex(collection);
 		}
 
 		protected override void Append(LoggingEvent[] loggingEvents)
 		{
 			var collection = GetCollection();
 			collection.InsertManyAsync(loggingEvents.Select(BuildBsonDocument));
+            CreateExpiryAfterIndex(collection);
 		}
 
 		private IMongoCollection<BsonDocument> GetCollection()
@@ -130,5 +137,17 @@ namespace Log4Mongo
 			}
 			return doc;
 		}
+
+        private void CreateExpiryAfterIndex(IMongoCollection<BsonDocument> collection)
+        {
+            if (ExpireAfterSeconds <= 0) return;
+            collection.Indexes.CreateOneAsync(
+                Builders<BsonDocument>.IndexKeys.Ascending("timestamp"),
+                new CreateIndexOptions()
+                {
+                    Name = "expireAfterSecondsIndex",
+                    ExpireAfter = new TimeSpan(ExpireAfterSeconds * TimeSpan.TicksPerSecond)
+                });
+        }
 	}
 }
