@@ -40,6 +40,7 @@ Appender configuration sample
 		<collectionName value="logs" />
 		
 		<field>
+			<!-- Note: this needs to be "timestamp" and NOT "Timestamp"  for the TTL index to work -->
 			<name value="timestamp" />
 			<layout type="log4net.Layout.RawTimeStampLayout" />
 		</field>
