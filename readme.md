@@ -29,6 +29,11 @@ Appender configuration sample
 		-->
 		<connectionStringName value="mongo-log4net" />
 		<!-- 
+		If set, a TTL (Time To Live) index will be created on the Timestamp field.  
+		Records older than this value will be deleted.
+		-->		
+		<expireAfterSeconds value='5' />
+		<!-- 
 		Name of the collection in database
 		Optional, Defaults to "logs"
 		-->
