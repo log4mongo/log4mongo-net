@@ -32,7 +32,7 @@ Appender configuration sample
 		If set, a TTL (Time To Live) index will be created on the Timestamp field.  
 		Records older than this value will be deleted.
 		-->		
-		<expireAfterSeconds value='5' />
+		<expireAfterSeconds value="3600" />
 		<!-- 
 		Name of the collection in database
 		Optional, Defaults to "logs"
