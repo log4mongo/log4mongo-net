@@ -38,6 +38,18 @@ namespace Log4Mongo
         /// </summary>
         public long ExpireAfterSeconds { get; set; }
 
+		/// <summary>
+		/// Maximum number of documents in collection
+		/// See http://docs.mongodb.org/manual/core/capped-collections/
+		/// </summary>
+		public string NewCollectionMaxDocs { get; set; }
+
+		/// <summary>
+		/// Maximum size of collection
+		/// See http://docs.mongodb.org/manual/core/capped-collections/
+		/// </summary>
+		public string NewCollectionMaxSize { get; set; }
+
 		#region Deprecated
 
         /// <summary>
@@ -97,8 +109,59 @@ namespace Log4Mongo
 		private IMongoCollection<BsonDocument> GetCollection()
 		{
 			var db = GetDatabase();
-			IMongoCollection<BsonDocument> collection = db.GetCollection<BsonDocument>(CollectionName ?? "logs");
+			var collectionName = CollectionName ?? "logs";
+
+			EnsureCollectionExists(db, collectionName);
+
+			var collection = db.GetCollection<BsonDocument>(collectionName);
 			return collection;
+		}
+
+		private void EnsureCollectionExists(IMongoDatabase db, string collectionName)
+		{
+			if (!CollectionExists(db, collectionName))
+			{
+				CreateCollection(db, collectionName);
+			}
+		}
+
+		private bool CollectionExists(IMongoDatabase db, string collectionName)
+		{
+			var filter = new BsonDocument("name", collectionName);
+			
+			return db.ListCollectionsAsync(new ListCollectionsOptions{Filter = filter})
+					 .Result
+					 .ToListAsync()
+					 .Result
+					 .Any();
+		}
+
+		private void CreateCollection(IMongoDatabase db, string collectionName)
+		{
+			var cob = new CreateCollectionOptions();
+
+			SetCappedCollectionOptions(cob);
+
+			db.CreateCollectionAsync(collectionName, cob).GetAwaiter().GetResult();
+		}
+
+		private void SetCappedCollectionOptions(CreateCollectionOptions options)
+		{
+			var unitResolver = new UnitResolver();
+
+			var newCollectionMaxSize = unitResolver.Resolve(NewCollectionMaxSize);
+			var newCollectionMaxDocs = unitResolver.Resolve(NewCollectionMaxDocs);
+
+			if (newCollectionMaxSize > 0)
+			{
+				options.Capped = true;
+				options.MaxSize = newCollectionMaxSize;
+
+				if (newCollectionMaxDocs > 0)
+				{
+					options.MaxDocuments = newCollectionMaxDocs;
+				}
+			}
 		}
 
 		private string GetConnectionString()
@@ -117,8 +180,8 @@ namespace Log4Mongo
 			}
 
 			MongoUrl url = MongoUrl.Create(connStr);
-            MongoClient client = new MongoClient(url);
-		    IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
+			MongoClient client = new MongoClient(url);
+			IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
 			return db;
 		}
 
