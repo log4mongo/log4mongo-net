@@ -33,10 +33,10 @@ namespace Log4Mongo
 		/// </summary>
 		public string CollectionName { get; set; }
 
-        /// <summary>
-        /// If set, create a TTL index to expire after specified number of seconds
-        /// </summary>
-        public long ExpireAfterSeconds { get; set; }
+		/// <summary>
+		/// If set, create a TTL index to expire after specified number of seconds
+		/// </summary>
+		public long ExpireAfterSeconds { get; set; }
 
 		/// <summary>
 		/// Maximum number of documents in collection
@@ -52,36 +52,36 @@ namespace Log4Mongo
 
 		#region Deprecated
 
-        /// <summary>
-        /// Hostname of MongoDB server
+		/// <summary>
+		/// Hostname of MongoDB server
 		/// Defaults to localhost
-        /// </summary>
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public string Host { get; set; }
 
-        /// <summary>
-        /// Port of MongoDB server
+		/// <summary>
+		/// Port of MongoDB server
 		/// Defaults to 27017
-        /// </summary>
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public int Port { get; set; }
 
-        /// <summary>
-        /// Name of the database on MongoDB
+		/// <summary>
+		/// Name of the database on MongoDB
 		/// Defaults to log4net_mongodb
-        /// </summary>
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public string DatabaseName { get; set; }
 
-        /// <summary>
-        /// MongoDB database user name
-        /// </summary>
+		/// <summary>
+		/// MongoDB database user name
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
-        public string UserName { get; set; }
+		public string UserName { get; set; }
 
-        /// <summary>
-        /// MongoDB database password
-        /// </summary>
+		/// <summary>
+		/// MongoDB database password
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public string Password { get; set; }
 
@@ -96,14 +96,14 @@ namespace Log4Mongo
 		{
 			var collection = GetCollection();
 			collection.InsertOneAsync(BuildBsonDocument(loggingEvent));
-            CreateExpiryAfterIndex(collection);
+			CreateExpiryAfterIndex(collection);
 		}
 
 		protected override void Append(LoggingEvent[] loggingEvents)
 		{
 			var collection = GetCollection();
 			collection.InsertManyAsync(loggingEvents.Select(BuildBsonDocument));
-            CreateExpiryAfterIndex(collection);
+			CreateExpiryAfterIndex(collection);
 		}
 
 		private IMongoCollection<BsonDocument> GetCollection()
@@ -128,8 +128,8 @@ namespace Log4Mongo
 		private bool CollectionExists(IMongoDatabase db, string collectionName)
 		{
 			var filter = new BsonDocument("name", collectionName);
-			
-			return db.ListCollectionsAsync(new ListCollectionsOptions{Filter = filter})
+
+			return db.ListCollectionsAsync(new ListCollectionsOptions { Filter = filter })
 					 .Result
 					 .ToListAsync()
 					 .Result
@@ -187,12 +187,12 @@ namespace Log4Mongo
 
 		private BsonDocument BuildBsonDocument(LoggingEvent log)
 		{
-			if(_fields.Count == 0)
+			if (_fields.Count == 0)
 			{
 				return BackwardCompatibility.BuildBsonDocument(log);
 			}
 			var doc = new BsonDocument();
-			foreach(MongoAppenderFileld field in _fields)
+			foreach (MongoAppenderFileld field in _fields)
 			{
 				object value = field.Layout.Format(log);
 				var bsonValue = value as BsonValue ?? BsonValue.Create(value);
@@ -201,16 +201,16 @@ namespace Log4Mongo
 			return doc;
 		}
 
-        private void CreateExpiryAfterIndex(IMongoCollection<BsonDocument> collection)
-        {
-            if (ExpireAfterSeconds <= 0) return;
-            collection.Indexes.CreateOneAsync(
-                Builders<BsonDocument>.IndexKeys.Ascending("timestamp"),
-                new CreateIndexOptions()
-                {
-                    Name = "expireAfterSecondsIndex",
-                    ExpireAfter = new TimeSpan(ExpireAfterSeconds * TimeSpan.TicksPerSecond)
-                });
-        }
+		private void CreateExpiryAfterIndex(IMongoCollection<BsonDocument> collection)
+		{
+			if (ExpireAfterSeconds <= 0) return;
+			collection.Indexes.CreateOneAsync(
+				Builders<BsonDocument>.IndexKeys.Ascending("timestamp"),
+				new CreateIndexOptions()
+				{
+					Name = "expireAfterSecondsIndex",
+					ExpireAfter = new TimeSpan(ExpireAfterSeconds * TimeSpan.TicksPerSecond)
+				});
+		}
 	}
 }
