@@ -582,5 +582,25 @@ namespace Log4Mongo.Tests
 
 			AssertThatCollectionIsNotCapped();
 		}
-	}
+
+        [Test]
+        public void Should_connect_over_ssl_connection_using_certificate_friendly_name()
+        {
+            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+<log4net>
+	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+        <connectionString value='mongodb://username:password@10.1.1.12:27018/databasename?ssl=true;sslVerifyCertificate=false'/>
+        <certificateFriendlyName value='certificateFriendlyName' />
+    </appender>
+	<root>
+		<level value='ALL' />
+		<appender-ref ref='MongoDBAppender' />
+	</root>
+</log4net>
+")));
+            var target = LogManager.GetLogger("Test");
+
+            target.Info("a log");
+        }
+    }
 }
