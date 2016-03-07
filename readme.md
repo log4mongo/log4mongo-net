@@ -29,9 +29,14 @@ Appender configuration sample
 		-->
 		<connectionStringName value="mongo-log4net" />
 		<!-- 
+		The Friendly Name of the certificate. This value will be used if SSL is set to true
+		The default StoreLocation is LocalMachine and StoreName is My
+		-->	
+		<certificateFriendlyName value="Certificate Friendly Name"/>	
+		<!-- 
 		If set, a TTL (Time To Live) index will be created on the Timestamp field.  
 		Records older than this value will be deleted.
-		-->		
+		-->	
 		<expireAfterSeconds value="3600" />
 		<!-- 
 		Name of the collection in database
