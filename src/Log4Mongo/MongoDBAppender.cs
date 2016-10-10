@@ -34,16 +34,16 @@ namespace Log4Mongo
 		/// </summary>
 		public string CollectionName { get; set; }
 
-        /// <summary>
-        /// The Friendly Name of the certificate. This value will be used if SSL is set to true
-        /// The default StoreLocation is LocalMachine and StoreName is My
-        /// </summary>
-        public string CertificateFriendlyName { get; set; }
+		/// <summary>
+		/// The Friendly Name of the certificate. This value will be used if SSL is set to true
+		/// The default StoreLocation is LocalMachine and StoreName is My
+		/// </summary>
+		public string CertificateFriendlyName { get; set; }
 
-        /// <summary>
-        /// If set, create a TTL index to expire after specified number of seconds
-        /// </summary>
-        public long ExpireAfterSeconds { get; set; }
+		/// <summary>
+		/// If set, create a TTL index to expire after specified number of seconds
+		/// </summary>
+		public long ExpireAfterSeconds { get; set; }
 
 		/// <summary>
 		/// Maximum number of documents in collection
@@ -187,56 +187,56 @@ namespace Log4Mongo
 			}
 
 			MongoUrl url = MongoUrl.Create(connStr);
-            //MongoClient client = new MongoClient(url);
-            MongoClientSettings settings = MongoClientSettings.FromUrl(url);
-            settings.SslSettings = url.UseSsl ? GetSslSettings() : null;
-            MongoClient client = new MongoClient(settings);
+			//MongoClient client = new MongoClient(url);
+			MongoClientSettings settings = MongoClientSettings.FromUrl(url);
+			settings.SslSettings = url.UseSsl ? GetSslSettings() : null;
+			MongoClient client = new MongoClient(settings);
 
-            IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
+			IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
 			return db;
 		}
 
-        private SslSettings GetSslSettings()
-        {
-            SslSettings sslSettings = null;
+		private SslSettings GetSslSettings()
+		{
+			SslSettings sslSettings = null;
 
-            if (!string.IsNullOrEmpty(CertificateFriendlyName))
-            {
-                X509Certificate2 certificate = GetCertificate(CertificateFriendlyName);
+			if (!string.IsNullOrEmpty(CertificateFriendlyName))
+			{
+				X509Certificate2 certificate = GetCertificate(CertificateFriendlyName);
 
-                if (null != certificate)
-                {
-                    sslSettings = new SslSettings();
-                    sslSettings.ClientCertificates = new List<X509Certificate2>() { certificate };
-                }
-            }
+				if (null != certificate)
+				{
+					sslSettings = new SslSettings();
+					sslSettings.ClientCertificates = new List<X509Certificate2>() { certificate };
+				}
+			}
 
-            return sslSettings;
-        }
+			return sslSettings;
+		}
 
-        private X509Certificate2 GetCertificate(string certificateFriendlyName)
-        {
-            X509Certificate2 certificateToReturn = null;
-            X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
+		private X509Certificate2 GetCertificate(string certificateFriendlyName)
+		{
+			X509Certificate2 certificateToReturn = null;
+			X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+			store.Open(OpenFlags.ReadOnly);
 
-            var certificates = store.Certificates;
+			var certificates = store.Certificates;
 
-            foreach (X509Certificate2 certificate in certificates)
-            {
-                if (certificate.FriendlyName.Equals(certificateFriendlyName))
-                {
-                    certificateToReturn = certificate;
-                    break;
-                }
-            }
+			foreach (X509Certificate2 certificate in certificates)
+			{
+				if (certificate.FriendlyName.Equals(certificateFriendlyName))
+				{
+					certificateToReturn = certificate;
+					break;
+				}
+			}
 
-            store.Close();
+			store.Close();
 
-            return certificateToReturn;
-        }
+			return certificateToReturn;
+		}
 
-        private BsonDocument BuildBsonDocument(LoggingEvent log)
+		private BsonDocument BuildBsonDocument(LoggingEvent log)
 		{
 			if (_fields.Count == 0)
 			{
