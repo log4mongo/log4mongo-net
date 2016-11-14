@@ -245,10 +245,15 @@ namespace Log4Mongo
 			var doc = new BsonDocument();
 			foreach (MongoAppenderFileld field in _fields)
 			{
-				object value = field.Layout.Format(log);
-				var bsonValue = value as BsonValue ?? BsonValue.Create(value);
-				doc.Add(field.Name, bsonValue);
-			}
+                object value = field.Layout.Format(log);
+                BsonValue bsonValue;
+                // if the object is complex and can't be mapped to a simple object, convert to bson document
+                if (!BsonTypeMapper.TryMapToBsonValue(value, out bsonValue))
+                {
+                    bsonValue = value.ToBsonDocument();
+                }
+                doc.Add(field.Name, bsonValue);
+            }
 			return doc;
 		}
 
