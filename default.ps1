@@ -8,11 +8,11 @@ Properties {
 Task default -Depends Test
 
 Task Deps {
-	Exec { & "$build_dir\tools\nuget\nuget.exe" install NUnit.Runners -Version "2.6.0.12051" -ExcludeVersion -OutputDirectory "$build_dir\tools" }
+	Exec { & "nuget.exe" install NUnit.Runners -Version "2.6.0.12051" -ExcludeVersion -OutputDirectory "$build_dir\tools" }
     
     Get-ChildItem "$build_dir\src\*\packages.config" -Exclude .nuget | ForEach-Object {
     	Write-Host "Downloading packages defined in $_"
-    	Exec { & "$build_dir\tools\nuget\nuget.exe" install $_ -OutputDirectory "$build_dir\lib" }
+    	Exec { & "nuget.exe" install $_ -OutputDirectory "$build_dir\lib" }
     }
 }
 
@@ -48,8 +48,8 @@ Task Publish -Depends Test {
     
     New-Item $build_dir\build -type directory
 
-   	Exec { & "$build_dir\tools\nuget\nuget.exe" pack "$build_dir\src\Log4Mongo\Log4Mongo.csproj" -Build -OutputDirectory $build_dir\build, -Symbols -Prop Configuration=$build_cfg }
-	Exec { & "$build_dir\tools\nuget\nuget.exe" push "$build_dir\build\log4mongo-net.$version.nupkg" }
+   	Exec { & "nuget.exe" pack "$build_dir\src\Log4Mongo\Log4Mongo.csproj" -Build -OutputDirectory $build_dir\build, -Symbols -Prop Configuration=$build_cfg }
+	Exec { & "nuget.exe" push "$build_dir\build\log4mongo-net.$version.nupkg" }
 
     $version = $version -split "\."
     $version[2] =  [System.Int32]::Parse($version[2]) + 1
