@@ -506,7 +506,7 @@ namespace Log4Mongo.Tests
 		{
 			var stats = GetCollectionStats();
 			stats.Elements.Should().Contain(new BsonElement("capped", true));
-			stats.Elements.Should().Contain(new BsonElement("storageSize", maxSize));
+			stats.Elements.Should().Contain(new BsonElement("maxSize", maxSize));
 
 			if (maxDocs.HasValue)
 			{
