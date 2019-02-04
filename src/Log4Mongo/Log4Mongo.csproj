@@ -2,18 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <PackageId>log4mongo-net</PackageId>
+    <PackageTags>log logging log4net debug diagnostic trace db database nosql mongo mongodb appender log4net apache</PackageTags>
+    <Description>MongoDB appender for log4net</Description>
+    <PackageLicenseUrl>https://raw.github.com/log4mongo/log4mongo-net/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/log4mongo/log4mongo-net</PackageProjectUrl>
+    <Authors>Gian Marco Gherardi</Authors>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.0" />
