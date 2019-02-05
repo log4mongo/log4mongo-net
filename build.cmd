@@ -1,1 +1,1 @@
-%~dp0\tools\psake\psake.cmd %*
+dotnet pack --configuration Release "%~dp0src\Log4Mongo.sln"
