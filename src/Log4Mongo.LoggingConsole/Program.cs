@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using log4net;
@@ -16,8 +17,9 @@ namespace Log4Mongo.LoggingConsole
 		public static void Main()
 		{
 			LogLog.InternalDebugging = true;
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
 
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"<?xml version='1.0' encoding='utf-8' ?>
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"<?xml version='1.0' encoding='utf-8' ?>
                 <configuration>
                     <configSections>
                         <section name='log4net' type='log4net.Config.Log4NetConfigurationSectionHandler, log4net' />

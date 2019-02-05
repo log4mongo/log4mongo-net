@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo", "Log4Mongo\Log4Mongo.csproj", "{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log4Mongo", "Log4Mongo\Log4Mongo.csproj", "{96F89BA0-D08B-45D3-90A2-453798F1DB39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo.Tests", "Log4Mongo.Tests\Log4Mongo.Tests.csproj", "{69DD514D-D096-4279-BA9D-4331EE4A6DE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log4Mongo.LoggingConsole", "Log4Mongo.LoggingConsole\Log4Mongo.LoggingConsole.csproj", "{CFF3CB1D-3D2E-4EBC-BC76-2CE4BB2894FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo.LoggingConsole", "Log4Mongo.LoggingConsole\Log4Mongo.LoggingConsole.csproj", "{CBFF2FAE-D502-4489-AA24-19087A1A71D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log4Mongo.Tests", "Log4Mongo.Tests\Log4Mongo.Tests.csproj", "{B0DB8ADB-1ADB-4843-A1C1-77EEB6077CB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,20 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69DD514D-D096-4279-BA9D-4331EE4A6DE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBFF2FAE-D502-4489-AA24-19087A1A71D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBFF2FAE-D502-4489-AA24-19087A1A71D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBFF2FAE-D502-4489-AA24-19087A1A71D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBFF2FAE-D502-4489-AA24-19087A1A71D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F89BA0-D08B-45D3-90A2-453798F1DB39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F89BA0-D08B-45D3-90A2-453798F1DB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F89BA0-D08B-45D3-90A2-453798F1DB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F89BA0-D08B-45D3-90A2-453798F1DB39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFF3CB1D-3D2E-4EBC-BC76-2CE4BB2894FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFF3CB1D-3D2E-4EBC-BC76-2CE4BB2894FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFF3CB1D-3D2E-4EBC-BC76-2CE4BB2894FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFF3CB1D-3D2E-4EBC-BC76-2CE4BB2894FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0DB8ADB-1ADB-4843-A1C1-77EEB6077CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0DB8ADB-1ADB-4843-A1C1-77EEB6077CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0DB8ADB-1ADB-4843-A1C1-77EEB6077CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0DB8ADB-1ADB-4843-A1C1-77EEB6077CB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B09874C-8D9B-4A01-9070-496B69EF0D55}
 	EndGlobalSection
 EndGlobal

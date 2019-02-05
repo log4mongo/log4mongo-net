@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>log4mongo-net</PackageId>
     <PackageTags>log logging log4net debug diagnostic trace db database nosql mongo mongodb appender log4net apache</PackageTags>
     <Description>MongoDB appender for log4net</Description>
@@ -11,14 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.0" />
-    <PackageReference Include="MongoDB.Bson" Version="2.0.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.0.1" />
-    <PackageReference Include="MongoDB.Driver.Core" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="MongoDB.Bson" Version="2.7.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.7.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

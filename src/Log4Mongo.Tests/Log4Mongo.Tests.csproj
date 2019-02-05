@@ -1,22 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-    <IsTestProject>true</IsTestProject>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.0" />
-    <PackageReference Include="MongoDB.Bson" Version="2.0.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.0.1" />
-    <PackageReference Include="MongoDB.Driver.Core" Version="2.0.1" />
-    <PackageReference Include="NUnit" Version="2.6.2" />
-    <PackageReference Include="NUnitTestAdapter" Version="2.1.1" />
-    <PackageReference Include="SharpTestsEx" Version="1.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="SharpTestsEx" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

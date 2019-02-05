@@ -10,6 +10,7 @@ using NUnit.Framework;
 using SharpTestsEx;
 using log4net;
 using log4net.Config;
+using System.Reflection;
 
 namespace Log4Mongo.Tests
 {
@@ -35,7 +36,8 @@ namespace Log4Mongo.Tests
 
 		private ILog GetConfiguredLog()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 		<connectionString value='mongodb://localhost' />
@@ -92,7 +94,7 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-			return LogManager.GetLogger("Test");
+			return LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 		}
 
 		[Test]
@@ -267,7 +269,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public async void Should_log_standard_document_if_no_fields_defined()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 		<log4net>
 			<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 				<connectionString value='mongodb://localhost' />
@@ -278,7 +281,7 @@ namespace Log4Mongo.Tests
 			</root>
 		</log4net>
 		")));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 			var threadName = Thread.CurrentThread.Name;
 
 			GlobalContext.Properties["GlobalContextProperty"] = "GlobalContextValue";
@@ -326,7 +329,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public async void Should_create_expiry_index()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 		    <log4net>
 			    <appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 				    <connectionString value='mongodb://localhost' />
@@ -338,7 +342,7 @@ namespace Log4Mongo.Tests
 			    </root>
 		    </log4net>
 		    ")));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -354,7 +358,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public async void Should_use_connection_from_connectionstrings_section_if_provided()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 		<log4net>
 			<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 				<connectionStringName value='mongodb-log4net' /> <!-- see App.config for value to use -->
@@ -365,7 +370,7 @@ namespace Log4Mongo.Tests
 			</root>
 		</log4net>
 		")));
-			ILog target = LogManager.GetLogger("Test");
+			ILog target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -380,7 +385,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public async void Should_use_connection_from_connectionstring_if_provided_connectionstringname_is_wrong()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 		<log4net>
 			<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 				<connectionStringName value='miss-spelt-connection-string' /> <!-- see App.config for missing name -->
@@ -392,7 +398,7 @@ namespace Log4Mongo.Tests
 			</root>
 		</log4net>
 		")));
-			ILog target = LogManager.GetLogger("Test");
+			ILog target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -408,7 +414,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public async void Should_log_in_batch()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 		<log4net>
 			<appender name='BufferingForwardingAppender' type='log4net.Appender.BufferingForwardingAppender' >
 				<bufferSize value='5'/>
@@ -423,7 +430,7 @@ namespace Log4Mongo.Tests
 			</root>
 		</log4net>
 		")));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info(1);
 			target.Info(2);
@@ -482,7 +489,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public void Should_create_capped_collection()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 		<connectionString value='mongodb://localhost' />
@@ -495,7 +503,7 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -517,7 +525,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public void Should_create_capped_collection_when_only_size_is_specified()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 		<connectionString value='mongodb://localhost' />
@@ -529,7 +538,7 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -541,8 +550,9 @@ namespace Log4Mongo.Tests
 		[TestCase("5MB", 5242880, "3k", 3000)]
 		public void Should_accept_units_in_collection_cap_values(string maxSizeString, int maxSize, string maxDocsString, int maxDocs)
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(string.Format(@"
-<log4net>
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(string.Format(@"
+< log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 		<connectionString value='mongodb://localhost' />
 		<newCollectionMaxSize value='{1}' />
@@ -554,7 +564,7 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ", maxDocsString, maxSizeString))));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -564,7 +574,8 @@ namespace Log4Mongo.Tests
 		[Test]
 		public void Should_not_cap_collection_when_units_invalid()
 		{
-			XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 		<connectionString value='mongodb://localhost' />
@@ -576,7 +587,7 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-			var target = LogManager.GetLogger("Test");
+			var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
 			target.Info("a log");
 
@@ -586,7 +597,9 @@ namespace Log4Mongo.Tests
         [Test]
         public void Should_connect_over_ssl_connection_using_certificate_friendly_name()
         {
-            XmlConfigurator.Configure(new MemoryStream(Encoding.UTF8.GetBytes(@"
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new MemoryStream(Encoding.UTF8.GetBytes(@"
+
 <log4net>
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
         <connectionString value='mongodb://username:password@10.1.1.12:27018/databasename?ssl=true;sslVerifyCertificate=false'/>
@@ -598,7 +611,7 @@ namespace Log4Mongo.Tests
 	</root>
 </log4net>
 ")));
-            var target = LogManager.GetLogger("Test");
+            var target = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Test");
 
             target.Info("a log");
         }
