@@ -7,7 +7,7 @@ namespace Log4Mongo.Tests
 	[TestFixture]
 	public class UnitResolverTest
 	{
-		private readonly string[] _invalidValues = new [] { "1b", "2abc", "xyz", null };
+		private static readonly string[] _invalidValues = new [] { "1b", "2abc", "xyz", null };
 
 		[TestCase("1", 1)]
 		[TestCase("2k", 2000)]
