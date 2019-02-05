@@ -1,0 +1,6 @@
+<Project>
+    <PropertyGroup>
+        <Version>3.0.0-pre</Version>
+        <Copyright>Gian Marco Gherardi 2019</Copyright>
+    </PropertyGroup>
+</Project>
