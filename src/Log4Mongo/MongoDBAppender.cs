@@ -159,10 +159,14 @@ namespace Log4Mongo
 			var newCollectionMaxSize = unitResolver.Resolve(NewCollectionMaxSize);
 			var newCollectionMaxDocs = unitResolver.Resolve(NewCollectionMaxDocs);
 
-			if (newCollectionMaxSize > 0)
+			if ((newCollectionMaxSize > 0) || (newCollectionMaxDocs > 0))
 			{
 				options.Capped = true;
-				options.MaxSize = newCollectionMaxSize;
+
+				if (newCollectionMaxSize > 0)
+				{
+					options.MaxSize = newCollectionMaxSize;
+				}
 
 				if (newCollectionMaxDocs > 0)
 				{
